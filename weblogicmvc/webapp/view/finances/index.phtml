@@ -1,0 +1,53 @@
+<?php use ArmoredCore\WebObjects\Data;
+use ArmoredCore\WebObjects\Layout;
+use ArmoredCore\WebObjects\URL;
+
+Layout::includeLayout('header') ?>
+<?php $finances= Data::get('finances') ?>
+
+    <!-- container -->
+    <div class="container">
+
+        <ol class="breadcrumb">
+            <li><a href="index.html">Home</a></li>
+            <li class="active">Book Index</li>
+        </ol>
+
+        <h2 class="text-left top-space">Book Index</h2>
+        <h2 class="top-space"></h2>
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-striped"><thead>
+                    <th><h3>id</h3>
+                    </th><th><h3>data</h3>
+                    </th><th><h3>valor</h3></th>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($finances as $finance) { ?>
+                        <tr>
+                            <td><?=$finance->id?></td>
+                            <td><?=$finance->data?></td>
+                            <td><?=$finance->valor?></td>
+                            <td>
+                                <a href="<?=Url::toRoute('finance/show', $finance->id)?>" class="btn btn-info" role="button">Show</a>
+                                <a href="<?=Url::toRoute('finance/edit', $finance->id)?>" class="btn btn-info" role="button">Edit</a>
+                                <a href="<?=Url::toRoute('finance/destroy', $finance->id)?>" class="btn btn-warning" role="button">Delete</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="col-sm-6">
+                <h3>Create a new Book</h3>
+                <p>
+                    <a href="<?=Url::toRoute('book/create')?>" class="btn btn-info" role="button">New</a>
+                </p>
+            </div>
+        </div> <!-- /row -->
+
+    </div>	<!-- /container -->
+<?php Layout::includeLayout('footer')?>

@@ -1,0 +1,25 @@
+*{
+    margin: 0px;
+    padding:0px;
+}    
+
+body{
+    background-image: url()
+}
+
+input{
+    display: block;
+    height: 55px;
+    width: 400px;
+    margin: 10px;
+    border-radius: 25px;
+    border: 1px solid grey;
+    font-size: 16pt;   
+    padding: 10px 20px;
+}
+
+div#bodyform{
+    /*background-color: aqua;*/
+    width: 420px;
+    margin: 150px auto 0px auto;
+}

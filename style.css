@@ -4,7 +4,12 @@
 }    
 
 body{
-    background-image: url()
+    background-image: url(logo_PWS_flighttravelair.jpg);
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center;
+    color: blue;
+    font-family: Verdana;
 }
 
 input{
@@ -22,4 +27,13 @@ div#bodyform{
     /*background-color: aqua;*/
     width: 420px;
     margin: 150px auto 0px auto;
+}
+
+div#bodyform{
+    text-align: center;
+    padding: 20px;
+}
+
+a{
+    
 }

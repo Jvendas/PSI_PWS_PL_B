@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   `idvoovolta` int(11) NOT NULL,
   `datacompra` datetime NOT NULL,
   `preco` float NOT NULL,
-  `checkin` tinytext NOT NULL,
+  `checkin` bit(1) NOT NULL,
   PRIMARY KEY (`idpassagem`),
   UNIQUE KEY `idpassagem_UNIQUE` (`idpassagem`),
   UNIQUE KEY `idvooida_UNIQUE` (`idvooida`),

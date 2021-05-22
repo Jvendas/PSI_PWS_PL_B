@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 20-Maio-2021 às 22:00
+-- Tempo de geração: 22-Maio-2021 às 16:13
 -- Versão do servidor: 5.7.31
 -- versão do PHP: 7.3.21
 
@@ -31,8 +31,8 @@ DROP TABLE IF EXISTS `airplanes`;
 CREATE TABLE IF NOT EXISTS `airplanes` (
   `idaviao` int(11) NOT NULL AUTO_INCREMENT,
   `referencia` varchar(45) NOT NULL,
-  `lotacaoTotal` int(11) NOT NULL,
-  `tipoAviao` varchar(45) NOT NULL,
+  `lotacaototal` int(11) NOT NULL,
+  `tipoaviao` varchar(45) NOT NULL,
   PRIMARY KEY (`idaviao`),
   UNIQUE KEY `idaviao_UNIQUE` (`idaviao`),
   UNIQUE KEY `referencia_UNIQUE` (`referencia`)
@@ -46,11 +46,11 @@ CREATE TABLE IF NOT EXISTS `airplanes` (
 
 DROP TABLE IF EXISTS `airports`;
 CREATE TABLE IF NOT EXISTS `airports` (
-  `IdAeroporto` int(11) NOT NULL,
-  `Nome` varchar(100) NOT NULL,
-  `Pais` varchar(100) NOT NULL,
-  `Cidade` varchar(100) NOT NULL,
-  PRIMARY KEY (`IdAeroporto`)
+  `Idaeroporto` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `pais` varchar(100) NOT NULL,
+  `cidade` varchar(100) NOT NULL,
+  PRIMARY KEY (`Idaeroporto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -78,17 +78,34 @@ CREATE TABLE IF NOT EXISTS `fights` (
 DROP TABLE IF EXISTS `scales`;
 CREATE TABLE IF NOT EXISTS `scales` (
   `idescala` int(11) NOT NULL AUTO_INCREMENT,
-  `idaeroportoOrigem` int(11) NOT NULL,
-  `idaeroportoDestino` int(11) NOT NULL,
-  `horarioOrigem` datetime NOT NULL,
-  `horarioDestino` datetime NOT NULL,
+  `idaeroportoorigem` int(11) NOT NULL,
+  `idaeroportodestino` int(11) NOT NULL,
+  `horarioorigem` datetime NOT NULL,
+  `horariodestino` datetime NOT NULL,
   `distancia` int(11) NOT NULL,
   `idvoo` int(11) NOT NULL,
   PRIMARY KEY (`idescala`),
   UNIQUE KEY `idescala_UNIQUE` (`idescala`),
-  UNIQUE KEY `idaeroportoOrigem_UNIQUE` (`idaeroportoOrigem`),
-  UNIQUE KEY `idaeroportoDestino_UNIQUE` (`idaeroportoDestino`),
+  UNIQUE KEY `idaeroportoOrigem_UNIQUE` (`idaeroportoorigem`),
+  UNIQUE KEY `idaeroportoDestino_UNIQUE` (`idaeroportodestino`),
   UNIQUE KEY `idvoo_UNIQUE` (`idvoo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `scalesairplanes`
+--
+
+DROP TABLE IF EXISTS `scalesairplanes`;
+CREATE TABLE IF NOT EXISTS `scalesairplanes` (
+  `idescalaaviao` int(11) NOT NULL AUTO_INCREMENT,
+  `idaviao` int(11) NOT NULL,
+  `idescala` int(11) NOT NULL,
+  `numpassageiros` int(11) NOT NULL,
+  PRIMARY KEY (`idescalaaviao`),
+  KEY `idescala` (`idescala`),
+  KEY `idaviao` (`idaviao`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -140,16 +157,23 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Limitadores para a tabela `fights`
 --
 ALTER TABLE `fights`
-  ADD CONSTRAINT `fights_ibfk_1` FOREIGN KEY (`idaeroporto`) REFERENCES `airports` (`IdAeroporto`);
+  ADD CONSTRAINT `fights_ibfk_1` FOREIGN KEY (`idaeroporto`) REFERENCES `airports` (`Idaeroporto`);
 
 --
 -- Limitadores para a tabela `scales`
 --
 ALTER TABLE `scales`
-  ADD CONSTRAINT `scales_ibfk_1` FOREIGN KEY (`idaeroportoDestino`) REFERENCES `airports` (`IdAeroporto`),
-  ADD CONSTRAINT `scales_ibfk_2` FOREIGN KEY (`idaeroportoOrigem`) REFERENCES `airports` (`IdAeroporto`),
+  ADD CONSTRAINT `scales_ibfk_1` FOREIGN KEY (`idaeroportodestino`) REFERENCES `airports` (`Idaeroporto`),
+  ADD CONSTRAINT `scales_ibfk_2` FOREIGN KEY (`idaeroportoorigem`) REFERENCES `airports` (`Idaeroporto`),
   ADD CONSTRAINT `scales_ibfk_3` FOREIGN KEY (`idescala`) REFERENCES `scales` (`idescala`),
   ADD CONSTRAINT `scales_ibfk_4` FOREIGN KEY (`idvoo`) REFERENCES `fights` (`idvoo`);
+
+--
+-- Limitadores para a tabela `scalesairplanes`
+--
+ALTER TABLE `scalesairplanes`
+  ADD CONSTRAINT `scalesairplanes_ibfk_1` FOREIGN KEY (`idescala`) REFERENCES `scales` (`idescala`),
+  ADD CONSTRAINT `scalesairplanes_ibfk_2` FOREIGN KEY (`idaviao`) REFERENCES `airplanes` (`idaviao`);
 
 --
 -- Limitadores para a tabela `tickets`

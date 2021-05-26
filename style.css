@@ -21,6 +21,9 @@ input{
     border: 1px solid grey;
     font-size: 16pt;   
     padding: 10px 20px;
+    background-color: rgba(35, 99, 218, 0.01);
+    color: rgb(26, 132, 173);
+    outline: none;
 }
 
 div#bodyform{
@@ -35,5 +38,33 @@ div#bodyform{
 }
 
 a{
-    
+    color: blue;
+    text-decoration: none;
+    display: block;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
+input[type=submit]{
+    background-color: lightblue;
+    border: none;
+    cursor: pointer;
+}
+
+::-webkit-input-placeholder{
+    color: rgba(86, 120, 182, 0.63);
+}
+
+:-moz-placeholder{
+    color: rgba(86, 120, 182, 0.63);
+}
+
+::-moz-placeholder{
+    color:rgba(86, 120, 182, 0.63);
+}
+
+:-ms-input-placeholder{
+    color:rgba(86, 120, 182, 0.63);
 }

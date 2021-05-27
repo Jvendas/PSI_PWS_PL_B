@@ -1,0 +1,53 @@
+<?php
+
+use ArmoredCore\WebObjects\Asset;
+use ArmoredCore\Facades\AssetBundler;
+use ArmoredCore\WebObjects\URL;
+?>
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center mb-1" href="index.html">
+            <div class="sidebar-brand-icon rotate-n-15">
+            </div>
+            <img src="<?= Asset::image('/myimgs/minilogo.jpg') ?>">
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0 mt-2">
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link " href="<?= URL::toRoute('admin/contas') ?>" aria-expanded="true">
+                <i class="fas fa-users-cog"></i>
+                <span>Contas</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Utilities Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link " href="<?= URL::toRoute('admin/aeroportos') ?>" aria-expanded="true">
+                <i class="fas fa-plane"></i>
+                <span>Aeroportos</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <div style="margin-bottom:30rem"></div>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0 mb-2">
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </div>
+    </ul>
+    <!-- End of Sidebar -->
+</div>

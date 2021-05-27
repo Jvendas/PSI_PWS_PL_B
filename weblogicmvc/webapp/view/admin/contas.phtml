@@ -1,0 +1,131 @@
+<?php
+
+use ArmoredCore\WebObjects\Asset;
+use ArmoredCore\WebObjects\Layout;
+use ArmoredCore\WebObjects\URL;
+use ArmoredCore\WebObjects\Data;
+
+
+$users = Data::get('users');
+
+
+
+
+?>
+
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Custom fonts for this template-->
+    <link href="<?= Asset::css('/template/fontawesome-free/css/all.min.css') ?>" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="<?= Asset::css('/template/sb-admin-2.css') ?>" rel="stylesheet">
+    <title>FlightTravelAir</title>
+</head>
+
+<body>
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <?php
+        Layout::includeLayout('leftbar')
+        ?>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mt-3 mb-4 text-gray-800">Contas</h1>
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <i class="fas fa-list"></i> Lista de utilizadores
+                        <button class="btn btn-outline-success btn-sm" style="float:right;" type="submit"><i class="fas fa-plus"></i> Novo Utilizador</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%">Username</th>
+                                        <th style="width: 30%">Name</th>
+                                        <th style="width: 40%">Email</th>
+                                        <th style="width: 10%">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    foreach ($users as $user) { ?>
+                                        <tr>
+                                            <td><?= $user->username ?></td>
+                                            <td><?= $user->nome ?></td>
+                                            <td><?= $user->email ?></td>
+                                            <td>
+                                                <form style="float: left; padding-right: 2px;" action="<?= Url::toRoute('conta/editar', $user->idutilizador) ?>" method="POST">
+                                                    <button class="btn btn-info btn-circle btn-sm" type="submit">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                    </button>
+                                                </form>
+
+                                                <!-- <a href="#" class="btn btn-warning btn-circle btn-sm">
+                                                    <i class="fas fa-unlock-alt"></i> </a> -->
+                                                <form style="float: left; padding-right: 2px;" action="<?= Url::toRoute('conta/eliminar', $user->idutilizador) ?>" method="POST">
+                                                    <button class="btn btn-danger btn-circle btn-sm" type="submit">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                    <!-- <tr>
+                                        <td>Tiger Nixon</td>
+                                        <td>System Architect</td>
+                                        <td>Edinburgh</td>
+                                        <td><a href="#" class="btn btn-info btn-circle btn-sm">
+                                                <i class="fas fa-pencil-alt"></i> </a>
+                                            <a href="#" class="btn btn-warning btn-circle btn-sm">
+                                                <i class="fas fa-unlock-alt"></i> </a>
+                                            <a href="#" class="btn btn-danger btn-circle btn-sm">
+                                                <i class="fas fa-trash-alt"></i> </a>
+                                        </td>
+                                    </tr> -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="<?= Asset::js('/sb-admin-2.min.js') ?>"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="<?= Asset::js('/demo/chart-area-demo.js') ?>"></script>
+    <script src="<?= Asset::js('/demo/chart-pie-demo.js') ?>"></script>
+
+</body>
+
+</html>
+
+<?php ?>

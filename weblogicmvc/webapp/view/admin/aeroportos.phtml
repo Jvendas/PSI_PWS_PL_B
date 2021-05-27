@@ -1,0 +1,179 @@
+<?php
+
+use ArmoredCore\WebObjects\Asset;
+use ArmoredCore\WebObjects\Data;
+use ArmoredCore\WebObjects\Layout;
+use ArmoredCore\WebObjects\URL;
+
+$errorMessage = Data::get('errorMessage');
+$successMessage = Data::get('successMessage');
+
+$airports = Data::get('airports');
+$airportToEdit = Data::get('airportToEdit');
+
+if (!($airportToEdit instanceof Airport)) {
+    $airportToEdit = null;
+}
+
+?>
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Custom fonts for this template-->
+    <link href="<?= Asset::css('/template/fontawesome-free/css/all.min.css') ?>" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="<?= Asset::css('/template/sb-admin-2.css') ?>" rel="stylesheet">
+    <title>FlightTravelAir</title>
+</head>
+
+<body>
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <?php
+        Layout::includeLayout('leftbar')
+        ?>
+        <!-- End of Sidebar -->
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mt-3 mb-4 text-gray-800">Aeroportos</h1>
+
+                <!-- ERROR MESSAGE -->
+                <?php if (!is_null($errorMessage) && is_string($errorMessage) && !empty($errorMessage)) { ?>
+                    <div class="alert alert-danger" role="alert">
+                        <?= $errorMessage; ?>
+                    </div>
+                <?php } ?>
+                <!-- SUCCESS MESSAGE -->
+                <?php if (!is_null($successMessage) && is_string($successMessage) && !empty($successMessage)) { ?>
+                    <div class="alert alert-success" role="alert">
+                        <?= $successMessage; ?>
+                    </div>
+                <?php } ?>
+
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <i class="fas fa-list"></i> Lista Aeroportos
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 30%">Nome</th>
+                                        <th style="width: 30%">País</th>
+                                        <th style="width: 30%">Cidade</th>
+                                        <th style="width: 10%">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    foreach ($airports as $airport) { ?>
+                                        <tr>
+                                            <td><?= $airport->nome ?></td>
+                                            <td><?= $airport->pais ?></td>
+                                            <td><?= $airport->cidade ?></td>
+                                            <td>
+                                                <!-- editar -->
+                                                <form style="float: left; padding-right: 2px;" action="<?= Url::toRoute('aeroporto/editar', $airport->idaeroporto) ?>" method="POST">
+                                                    <button class="btn btn-info btn-circle btn-sm" type="submit">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                    </button>
+                                                </form>
+                                                <!-- eliminar -->
+                                                <form style="float: left; padding-right: 2px;" action="<?= Url::toRoute('aeroporto/eliminar', $airport->idaeroporto) ?>" method="POST">
+                                                    <button class="btn btn-danger btn-circle btn-sm" type="submit">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADD AEROPORTO -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <?php if (is_null($airportToEdit)) { ?>
+                            <i class="fas fa-plus"></i> Adicionar Aeroporto
+                        <?php } else { ?>
+                            <i class="fas fa-pencil-alt"></i> Editar Aeroporto
+                        <?php }  ?>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card-body">
+
+                            <?php if (is_null($airportToEdit)) { ?>
+                                <form action="<?php echo (Url::toRoute('aeroporto/criar')); ?>" method="post">
+                                <?php } else { ?>
+                                    <form action="<?php echo (Url::toRoute('aeroporto/atualizar', $airportToEdit->idaeroporto)); ?>" method="post">
+                                    <?php } ?>
+                                    <div class="form-group">
+                                        <label for="nome">Nome</label>
+                                        <input value="<?php if (!is_null($airportToEdit)) {
+                                                            echo ($airportToEdit->nome);
+                                                        } ?>" type="text" class="form-control" id="nome" name="nome" aria-describedby="emailHelp">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pais">País</label>
+                                        <input value="<?php if (!is_null($airportToEdit)) {
+                                                            echo ($airportToEdit->pais);
+                                                        } ?>" type="text" class="form-control" id="pais" name="pais" aria-describedby="emailHelp">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cidade">Cidade</label>
+                                        <input value="<?php if (!is_null($airportToEdit)) {
+                                                            echo ($airportToEdit->cidade);
+                                                        } ?>" type="text" class="form-control" id="cidade" name="cidade" aria-describedby="emailHelp">
+                                    </div>
+                                    <?php if (is_null($airportToEdit)) { ?>
+                                        <button type="submit" style="float: right;" class="btn btn-outline-success mb-2">Criar</button>
+                                    <?php } else {
+                                    ?>
+                                        <button type="submit" style="float: right;" class="btn btn-outline-info mb-2">Editar</button>
+                                    <?php } ?>
+                                    </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="<?= Asset::js('/sb-admin-2.min.js') ?>"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="<?= Asset::js('/demo/chart-area-demo.js') ?>"></script>
+    <script src="<?= Asset::js('/demo/chart-pie-demo.js') ?>"></script>
+
+</body>
+
+</html>

@@ -9,10 +9,7 @@ use ArmoredCore\WebObjects\Data;
 $users = Data::get('users');
 
 
-
-
 ?>
-
 
 <!doctype html>
 <html lang="en">
@@ -48,7 +45,9 @@ $users = Data::get('users');
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <i class="fas fa-list"></i> Lista de utilizadores
-                        <button class="btn btn-outline-success btn-sm" style="float:right;" type="submit"><i class="fas fa-plus"></i> Novo Utilizador</button>
+                        <!-- <form action="" method="GET"> -->
+                        <a href="<?= Url::toRoute('user/register'); ?>" class="btn btn-outline-success btn-sm" style="float:right;" type="submit"><i class="fas fa-plus"></i> Novo Utilizador</a>
+
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -69,7 +68,7 @@ $users = Data::get('users');
                                             <td><?= $user->nome ?></td>
                                             <td><?= $user->email ?></td>
                                             <td>
-                                                <form style="float: left; padding-right: 2px;" action="<?= Url::toRoute('conta/editar', $user->idutilizador) ?>" method="POST">
+                                                <form style="float: left; padding-right: 2px;" action="<?= Url::toRoute('user/editar', $user->idutilizador) ?>" method="POST">
                                                     <button class="btn btn-info btn-circle btn-sm" type="submit">
                                                         <i class="fas fa-pencil-alt"></i>
                                                     </button>
@@ -77,7 +76,7 @@ $users = Data::get('users');
 
                                                 <!-- <a href="#" class="btn btn-warning btn-circle btn-sm">
                                                     <i class="fas fa-unlock-alt"></i> </a> -->
-                                                <form style="float: left; padding-right: 2px;" action="<?= Url::toRoute('conta/eliminar', $user->idutilizador) ?>" method="POST">
+                                                <form style="float: left; padding-right: 2px;" action="<?= Url::toRoute('user/eliminar', $user->idutilizador) ?>" method="POST">
                                                     <button class="btn btn-danger btn-circle btn-sm" type="submit">
                                                         <i class="fas fa-trash-alt"></i>
                                                     </button>
@@ -85,18 +84,6 @@ $users = Data::get('users');
                                             </td>
                                         </tr>
                                     <?php } ?>
-                                    <!-- <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td><a href="#" class="btn btn-info btn-circle btn-sm">
-                                                <i class="fas fa-pencil-alt"></i> </a>
-                                            <a href="#" class="btn btn-warning btn-circle btn-sm">
-                                                <i class="fas fa-unlock-alt"></i> </a>
-                                            <a href="#" class="btn btn-danger btn-circle btn-sm">
-                                                <i class="fas fa-trash-alt"></i> </a>
-                                        </td>
-                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>

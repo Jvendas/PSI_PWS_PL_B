@@ -19,10 +19,10 @@ class AirportController extends BaseController
         $exist = Airport::all(array('conditions' => array('nome = ? AND pais = ?', $airport['nome'], $airport['pais'])));
 
         if ($exist) {
-            Session::set("admin-aeroportos-error", "Já existe o aeroporto com o nome: " . $airport['nome']);
+            Session::set("error-message", "Já existe o aeroporto com o nome: " . $airport['nome']);
         } else {
             Airport::create($airport);
-            Session::set("admin-aeroportos-success", "Aeroporto " . $airport['nome'] . " criado com sucesso!");
+            Session::set("success-message", "Aeroporto " . $airport['nome'] . " criado com sucesso!");
         }
 
         Redirect::toRoute('admin/aeroportos');
@@ -57,10 +57,10 @@ class AirportController extends BaseController
         $airport = Airport::find([$idaeroporto]);
 
         if (is_null($airport)) {
-            Session::set("admin-aeroportos-error", "Não foi possível eliminar o Aeroporto com o id " . $idaeroporto);
+            Session::set("error-message", "Não foi possível eliminar o Aeroporto com o id " . $idaeroporto);
         } else {
             $airport->delete();
-            Session::set("admin-aeroportos-success", "Aeroporto com o id " . $idaeroporto . " eliminado com sucesso!");
+            Session::set("success-message", "Aeroporto com o id " . $idaeroporto . " eliminado com sucesso!");
         }
 
         Redirect::toRoute('admin/aeroportos');

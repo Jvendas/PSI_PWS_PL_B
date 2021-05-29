@@ -24,15 +24,15 @@ class AdminController extends BaseController
         }
 
         // mensagem de error
-        if (Session::has("admin-aeroportos-error")) {
-            $error = Session::get("admin-aeroportos-error");
-            Session::remove("admin-aeroportos-error");
+        if (Session::has("error-message")) {
+            $error = Session::get("error-message");
+            Session::remove("error-message");
         }
 
         // mensagem de sucesso
-        if (Session::has("admin-aeroportos-success")) {
-            $success = Session::get("admin-aeroportos-success");
-            Session::remove("admin-aeroportos-success");
+        if (Session::has("success-message")) {
+            $success = Session::get("success-message");
+            Session::remove("success-message");
         }
 
         return View::make('admin.aeroportos', ['airports' => $airports, 'errorMessage' => $error, 'successMessage' => $success]);

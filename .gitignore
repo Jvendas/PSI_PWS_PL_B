@@ -1,5 +1,6 @@
 #para o git ignorar tudo
 /*
+.vscode
 
 #menos as seguintes pastas e ficheiros
 !/weblogicmvc

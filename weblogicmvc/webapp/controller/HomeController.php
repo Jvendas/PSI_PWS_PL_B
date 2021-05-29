@@ -1,4 +1,5 @@
 <?php
+
 use ArmoredCore\Controllers\BaseController;
 use ArmoredCore\WebObjects\Redirect;
 use ArmoredCore\WebObjects\Session;
@@ -15,46 +16,49 @@ use ArmoredCore\WebObjects\Debug;
 class HomeController extends BaseController
 {
 
-    public function index(){
-
+    public function index()
+    {
         return View::make('home.index');
     }
 
-    public function start(){
+    public function start()
+    {
 
         //View::attachSubView('titlecontainer', 'layout.pagetitle', ['title' => 'Quick Start']);
         return View::make('home.start');
     }
 
-    public function login(){
-        Throw new Exception('Method not implemented. Do it yourself!');
+    public function login()
+    {
+        return View::make('home/login');
     }
 
 
-    public function worksheet(){
-
+    public function worksheet()
+    {
         View::attachSubView('titlecontainer', 'layout.pagetitle', ['title' => 'MVC Worksheet']);
 
         return View::make('home.worksheet');
     }
 
-    public function setsession(){
+    public function setsession()
+    {
         $dataObject = MetaArmCoreModel::getComponents();
         Session::set('object', $dataObject);
 
         Redirect::toRoute('home/worksheet');
     }
 
-    public function showsession(){
+    public function showsession()
+    {
         $res = Session::get('object');
         var_dump($res);
     }
 
-    public function destroysession(){
+    public function destroysession()
+    {
 
         Session::destroy();
         Redirect::toRoute('home/worksheet');
     }
-
-
 }

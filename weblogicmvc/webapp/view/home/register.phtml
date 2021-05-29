@@ -1,0 +1,148 @@
+<?php
+
+use ArmoredCore\WebObjects\Asset;
+use ArmoredCore\WebObjects\Layout;
+use ArmoredCore\WebObjects\URL;
+use ArmoredCore\WebObjects\Data;
+
+// declaracação de variaveis para a vista
+$user = Data::get('user');
+$errorMessage = Data::get('errorMessage');
+$isAdmin = Data::get('isAdmin');
+var_dump($isAdmin);
+
+?>
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Custom fonts for this template-->
+    <link href="<?= Asset::css('/template/fontawesome-free/css/all.min.css') ?>" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="<?= Asset::css('/template/sb-admin-2.css') ?>" rel="stylesheet">
+    <title>FlightTravelAir</title>
+</head>
+
+<body>
+
+    <div class="container" style="position: fixed; top:50%; left:50%;transform: translate(-50%, -50%);">
+        <div class="card bg-light">
+
+            <!-- mensagem de erro -->
+            <?php if (!is_null($errorMessage) && is_string($errorMessage) && !empty($errorMessage)) { ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= $errorMessage; ?>
+                </div>
+            <?php } ?>
+
+            <!-- criar conta form -->
+            <div class="card-body mx-auto" style="max-width: 400px;">
+                <h4 class="card-title mt-3 text-center">Criar Conta</h4>
+                <?php if ($user->username) { ?>
+                    <form action="<?php echo (Url::toRoute('user/atualizar', $user->idutilizador)) ?>" method="POST">
+                    <?php } else { ?>
+                        <form action="<?php echo (Url::toRoute('user/register')); ?>" method="POST">
+                        <?php } ?>
+                        <!-- username -->
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fas fa-user-circle"></i></i> </span>
+                            </div>
+                            <?php if ($user->username) { ?>
+                                <input disabled value="<?php echo ($user->username); ?>" name="username" class="form-control" placeholder="Username" type="username">
+                            <?php } else { ?>
+                                <input value="" name="username" class="form-control" placeholder="Username" type="username">
+                            <?php } ?>
+                        </div>
+                        <!-- nome -->
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                            </div>
+                            <input value="<?php echo ($user->nome); ?>" name="nome" class="form-control" placeholder="Nome" type="text">
+                        </div>
+                        <!-- email -->
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                            </div>
+                            <input value="<?php echo ($user->email); ?>" name="email" class="form-control" placeholder="Email" type="email">
+                        </div>
+
+                        <!-- password -->
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                            </div>
+                            <input value="<?php echo ($user->password); ?>" name="password" class="form-control" placeholder="Password" type="password">
+                        </div>
+
+                        <!-- telefone -->
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
+                            </div>
+                            <input value="<?php echo ($user->telefone); ?>" name="telefone" class="form-control" placeholder="Telefone" type="text">
+                        </div>
+                        <!-- data de nascimento -->
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fas fa-birthday-cake"></i></i> </span>
+                            </div>
+                            <?php if ($user->datanascimento) { ?>
+                                <input value="<?php echo ($user->datanascimento->format('Y-m-d')); ?>" name="datanascimento" class="form-control" placeholder="Data Nascimento" type="date">
+                            <?php } else { ?>
+                                <input value="" name="datanascimento" class="form-control" placeholder="Data Nascimento" type="date">
+                            <?php } ?>
+                        </div>
+                        <!-- perfil -->
+                        <?php if (is_bool($isAdmin) && $isAdmin==true)  { ?>
+                            <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fas fa-user-cog"></i></span>
+                                </div>
+                                <select name="perfil" class="custom-select">
+                                    <!-- perfil -->
+                                    <option value="" disabled hidden <?php if ($user->perfil == "") {
+                                                                            echo ("selected");
+                                                                        } ?>>Perfil</option>
+                                    <!-- operador checkin -->
+                                    <option <?php if ($user->perfil == "operador de checkin") {
+                                                echo ("selected");
+                                            } ?> value="operador de checkin">Operador Checkin</option>
+
+                                    <!-- gestor de voo -->
+                                    <option <?php if ($user->perfil == "gestor de voo") {
+                                                echo ("selected");
+                                            } ?> value="gestor de voo">Gestor de Voo</option>
+                                </select>
+                            </div>
+                        <?php } ?>
+                        <!-- botao criar conta   -->
+                        <?php if ($user->username) { ?>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success btn-block">Editar Conta</button>
+                            </div>
+                        <?php } else { ?>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success btn-block">Criar Conta</button>
+                            </div>
+                            <!-- login link -->
+                            <p class="text-center">Já tens conta?<a href="<?= Url::toRoute('home/login') ?>"> Log In</a> </p>
+                        <?php } ?>
+                        </form>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

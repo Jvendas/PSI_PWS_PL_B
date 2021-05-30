@@ -13,9 +13,9 @@ class UserController extends BaseController
     {
         $error = "";
 
-        if (Session::has("user-register-error")) {
-            $error = Session::get("user-register-error");
-            Session::remove("user-register-error");
+        if (Session::has("error-message")) {
+            $error = Session::get("error-message");
+            Session::remove("error-message");
         }
 
         return View::make('home.register', ['errorMessage' => $error]);

@@ -1,0 +1,70 @@
+*{
+    margin: 0px;
+    padding:0px;
+}    
+
+body{
+    background-image: url(logo_PWS_flighttravelair.jpg);
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center;
+    color: hsl(229, 72%, 59%);
+    font-family: Verdana;
+}
+
+input{
+    display: block;
+    height: 55px;
+    width: 400px;
+    margin: 10px;
+    border-radius: 25px;
+    border: 1px solid grey;
+    font-size: 16pt;   
+    padding: 10px 20px;
+    background-color: rgba(35, 99, 218, 0.01);
+    color: rgb(26, 132, 173);
+    outline: none;
+}
+
+div#bodyform{
+    /*background-color: aqua;*/
+    width: 420px;
+    margin: 150px auto 0px auto;
+}
+
+div#bodyform{
+    text-align: center;
+    padding: 20px;
+}
+
+a{
+    color: rgba(161, 35, 35, 0.651);
+    text-decoration: none;
+    display: block;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
+input[type=submit]{
+    background-color: lightblue;
+    border: none;
+    cursor: pointer;
+}
+
+::-webkit-input-placeholder{
+    color: rgba(86, 120, 182, 0.63);
+}
+
+:-moz-placeholder{
+    color: rgba(86, 120, 182, 0.63);
+}
+
+::-moz-placeholder{
+    color:rgba(86, 120, 182, 0.63);
+}
+
+:-ms-input-placeholder{
+    color:rgba(86, 120, 182, 0.63);
+}

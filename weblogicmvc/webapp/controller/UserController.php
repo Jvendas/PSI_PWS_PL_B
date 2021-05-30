@@ -53,22 +53,22 @@ class UserController extends BaseController
 
         Redirect::toRoute('admin/contas');
     }
-
+    
     public function editar($idutilizador)
     {
         $user = User::find([$idutilizador]);
-
+        
         if (!is_null($user)) {
-
+            
             return View::make('home.register', ['user' => $user]);
         }
     }
-
+    
     public function atualizar($idutilizador)
     {
         $user = User::find([$idutilizador]);
         $user->update_attributes(Post::getAll());
-
+        
         if ($user->is_valid()) {
             $user->save();
             Redirect::toRoute('admin/contas');
@@ -76,5 +76,35 @@ class UserController extends BaseController
             // TODO: show errors
             //Redirect::flashToRoute('aeroporto/editar', ['airport' => $airport]);
         }
+    }
+
+    public function loginView(){
+        return View::make('home.login');
+    }
+
+    public function login(){
+        $user = Post::getAll();
+    //    $user = User::find_by_perfil('passageiro');
+        $exist = User::all(array('conditions' => array('username', $user['username'])));
+        
+        if ($exist){
+            //Session::destroy();
+            Session::set("Authentication", $user['username']);
+            $user = User::all();
+
+        switch ($user->perfil) {
+            case 'administrador':
+                return View::make('admin.contas', ['user' => $user]);
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+
+        } else {
+            Redirect::toRoute('user/register');
+        }
+
     }
 }

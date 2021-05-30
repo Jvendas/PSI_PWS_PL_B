@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 22-Maio-2021 às 16:13
+-- Tempo de geração: 30-Maio-2021 às 15:47
 -- Versão do servidor: 5.7.31
 -- versão do PHP: 7.3.21
 
@@ -46,21 +46,28 @@ CREATE TABLE IF NOT EXISTS `airplanes` (
 
 DROP TABLE IF EXISTS `airports`;
 CREATE TABLE IF NOT EXISTS `airports` (
-  `Idaeroporto` int(11) NOT NULL,
+  `idaeroporto` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(100) NOT NULL,
   `pais` varchar(100) NOT NULL,
   `cidade` varchar(100) NOT NULL,
-  PRIMARY KEY (`Idaeroporto`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`idaeroporto`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `airports`
+--
+
+INSERT INTO `airports` (`idaeroporto`, `nome`, `pais`, `cidade`) VALUES
+(26, 'oiu', 'asd', 'asd');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `fights`
+-- Estrutura da tabela `flights`
 --
 
-DROP TABLE IF EXISTS `fights`;
-CREATE TABLE IF NOT EXISTS `fights` (
+DROP TABLE IF EXISTS `flights`;
+CREATE TABLE IF NOT EXISTS `flights` (
   `idvoo` int(11) NOT NULL AUTO_INCREMENT,
   `idaeroporto` int(11) NOT NULL,
   `preco` float NOT NULL,
@@ -147,26 +154,34 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`idutilizador`),
   UNIQUE KEY `idutilizador_UNIQUE` (`idutilizador`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `users`
+--
+
+INSERT INTO `users` (`idutilizador`, `nome`, `datanascimento`, `email`, `telefone`, `username`, `password`, `perfil`) VALUES
+(1, 'Ana', '2021-05-10', 'admfmf@gmail.com', 918673463, 'AnaC13', '12345', 'passageiro'),
+(6, 'dsa', '2021-05-13', 'dsa@ht.co', 123, 'dsa', 'dsa', 'gestor de voo');
 
 --
 -- Restrições para despejos de tabelas
 --
 
 --
--- Limitadores para a tabela `fights`
+-- Limitadores para a tabela `flights`
 --
-ALTER TABLE `fights`
-  ADD CONSTRAINT `fights_ibfk_1` FOREIGN KEY (`idaeroporto`) REFERENCES `airports` (`Idaeroporto`);
+ALTER TABLE `flights`
+  ADD CONSTRAINT `flights_ibfk_1` FOREIGN KEY (`idaeroporto`) REFERENCES `airports` (`idaeroporto`);
 
 --
 -- Limitadores para a tabela `scales`
 --
 ALTER TABLE `scales`
-  ADD CONSTRAINT `scales_ibfk_1` FOREIGN KEY (`idaeroportodestino`) REFERENCES `airports` (`Idaeroporto`),
-  ADD CONSTRAINT `scales_ibfk_2` FOREIGN KEY (`idaeroportoorigem`) REFERENCES `airports` (`Idaeroporto`),
   ADD CONSTRAINT `scales_ibfk_3` FOREIGN KEY (`idescala`) REFERENCES `scales` (`idescala`),
-  ADD CONSTRAINT `scales_ibfk_4` FOREIGN KEY (`idvoo`) REFERENCES `fights` (`idvoo`);
+  ADD CONSTRAINT `scales_ibfk_4` FOREIGN KEY (`idvoo`) REFERENCES `flights` (`idvoo`),
+  ADD CONSTRAINT `scales_ibfk_5` FOREIGN KEY (`idaeroportoorigem`) REFERENCES `airports` (`idaeroporto`),
+  ADD CONSTRAINT `scales_ibfk_6` FOREIGN KEY (`idaeroportodestino`) REFERENCES `airports` (`idaeroporto`);
 
 --
 -- Limitadores para a tabela `scalesairplanes`
@@ -179,9 +194,9 @@ ALTER TABLE `scalesairplanes`
 -- Limitadores para a tabela `tickets`
 --
 ALTER TABLE `tickets`
-  ADD CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`idvooida`) REFERENCES `fights` (`idvoo`),
+  ADD CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`idvooida`) REFERENCES `flights` (`idvoo`),
   ADD CONSTRAINT `tickets_ibfk_2` FOREIGN KEY (`idpassagem`) REFERENCES `tickets` (`idpassagem`),
-  ADD CONSTRAINT `tickets_ibfk_3` FOREIGN KEY (`idvoovolta`) REFERENCES `fights` (`idvoo`);
+  ADD CONSTRAINT `tickets_ibfk_3` FOREIGN KEY (`idvoovolta`) REFERENCES `flights` (`idvoo`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

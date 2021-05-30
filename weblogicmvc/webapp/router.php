@@ -17,16 +17,19 @@ use ArmoredCore\Facades\Router;
 Router::get('/',                                'HomeController/index');
 Router::get('home/',                            'HomeController/index');
 Router::get('home/index',                       'HomeController/index');
-Router::get('home/start',                       'HomeController/start');
-Router::get('home/admin',                       'AdminController/index');
+
+// user
+Router::get('user/register',                    'UserController/index');
+Router::post('user/register',                   'UserController/registar');
 
 // admin
 Router::get('admin/',                           'AdminController/contas');
 
 // admin contas
 Router::get('admin/contas',                     'AdminController/contas');
-Router::post('conta/eliminar',                 'AccountsController/eliminar');
-Router::post('conta/editar',                   'AccountsController/editar');
+Router::post('user/eliminar',                   'UserController/eliminar');
+Router::post('user/editar',                     'UserController/editar');
+Router::post('user/atualizar',                  'UserController/atualizar');
 
 // admin aeroports
 Router::get('admin/aeroportos',                'AdminController/aeroportos');
@@ -36,8 +39,8 @@ Router::post('aeroporto/editar',               'AirportController/editar');
 Router::post('aeroporto/atualizar',            'AirportController/atualizar');
 
 //
-Router::get('home/loginView',                    'UserController/loginView');
-Router::post('home/login',                        'UserController/login');
+Router::get('home/login',                       'UserController/loginView');
+Router::post('home/login',                      'UserController/login');
 
 
 

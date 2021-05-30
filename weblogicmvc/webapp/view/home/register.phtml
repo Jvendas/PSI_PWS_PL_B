@@ -9,7 +9,6 @@ use ArmoredCore\WebObjects\Data;
 $user = Data::get('user');
 $errorMessage = Data::get('errorMessage');
 $isAdmin = Data::get('isAdmin');
-var_dump($isAdmin);
 
 ?>
 
@@ -103,7 +102,7 @@ var_dump($isAdmin);
                             <?php } ?>
                         </div>
                         <!-- perfil -->
-                        <?php if (is_bool($isAdmin) && $isAdmin==true)  { ?>
+                        <?php if (is_bool($isAdmin) && $isAdmin == true) { ?>
                             <div class="form-group input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"> <i class="fas fa-user-cog"></i></span>

@@ -85,7 +85,7 @@ class UserController extends BaseController
     public function login(){
         $user = Post::getAll();
     //    $user = User::find_by_perfil('passageiro');
-        $exist = User::all(array('conditions' => array('username', $user['username'])));
+        $exist = User::all(array('conditions'=> array('username = ? AND password = ?', $user['username'], $user['password'])));
         
         if ($exist){
             //Session::destroy();

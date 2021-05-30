@@ -12,16 +12,16 @@ body{
     font-family: Verdana;
 }
 
-input{
+input {
     display: block;
     height: 55px;
     width: 400px;
     margin: 10px;
     border-radius: 25px;
     border: 1px solid grey;
-    font-size: 16pt;   
+    font-size: 16pt;
     padding: 10px 20px;
-    background-color: rgba(35, 99, 218, 0.01);
+    background-color: rgb(255 255 255 / 70%);
     color: rgb(26, 132, 173);
     outline: none;
 }

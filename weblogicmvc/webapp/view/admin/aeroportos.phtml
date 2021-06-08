@@ -35,15 +35,12 @@ if (!($airportToEdit instanceof Airport)) {
 </head>
 
 <body>
-
-    <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar -->
         <?php
         Layout::includeLayout('leftbar')
         ?>
         <!-- End of Sidebar -->
-
         <div id="content-wrapper" class="d-flex flex-column">
             <div class="container-fluid">
 
@@ -62,12 +59,11 @@ if (!($airportToEdit instanceof Airport)) {
                         <?= $successMessage; ?>
                     </div>
                 <?php } ?>
-
-
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <i class="fas fa-list"></i> Lista Aeroportos
                     </div>
+                    <!-- Tabela Aeroportos -->
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -119,30 +115,33 @@ if (!($airportToEdit instanceof Airport)) {
                     </div>
                     <div class="col-md-4">
                         <div class="card-body">
-
                             <?php if (is_null($airportToEdit)) { ?>
                                 <form action="<?php echo (Url::toRoute('aeroporto/criar')); ?>" method="post">
                                 <?php } else { ?>
                                     <form action="<?php echo (Url::toRoute('aeroporto/atualizar', $airportToEdit->idaeroporto)); ?>" method="post">
                                     <?php } ?>
+                                    <!-- nome aeroporto -->
                                     <div class="form-group">
                                         <label for="nome">Nome</label>
                                         <input value="<?php if (!is_null($airportToEdit)) {
                                                             echo ($airportToEdit->nome);
-                                                        } ?>" type="text" class="form-control" id="nome" name="nome" aria-describedby="emailHelp">
+                                                        } ?>" type="text" class="form-control" id="nome" name="nome">
                                     </div>
+                                    <!-- pais aeroporto -->
                                     <div class="form-group">
                                         <label for="pais">País</label>
                                         <input value="<?php if (!is_null($airportToEdit)) {
                                                             echo ($airportToEdit->pais);
-                                                        } ?>" type="text" class="form-control" id="pais" name="pais" aria-describedby="emailHelp">
+                                                        } ?>" type="text" class="form-control" id="pais" name="pais">
                                     </div>
+                                    <!-- cidade aeroporto -->
                                     <div class="form-group">
                                         <label for="cidade">Cidade</label>
                                         <input value="<?php if (!is_null($airportToEdit)) {
                                                             echo ($airportToEdit->cidade);
-                                                        } ?>" type="text" class="form-control" id="cidade" name="cidade" aria-describedby="emailHelp">
+                                                        } ?>" type="text" class="form-control" id="cidade" name="cidade">
                                     </div>
+                                    <!-- Botao criar/editar -->
                                     <?php if (is_null($airportToEdit)) { ?>
                                         <button type="submit" style="float: right;" class="btn btn-outline-success mb-2">Criar</button>
                                     <?php } else {

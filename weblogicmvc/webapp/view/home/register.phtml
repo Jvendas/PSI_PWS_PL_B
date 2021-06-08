@@ -43,7 +43,11 @@ $isAdmin = Data::get('isAdmin');
 
             <!-- criar conta form -->
             <div class="card-body mx-auto" style="max-width: 400px;">
-                <h4 class="card-title mt-3 text-center">Criar Conta</h4>
+                <?php if ($user->username) { ?>
+                    <h4 class="card-title mt-3 text-center">Editar Conta</h4>
+                <?php } else { ?>
+                    <h4 class="card-title mt-3 text-center">Criar Conta</h4>
+                <?php } ?>
                 <?php if ($user->username) { ?>
                     <form action="<?php echo (Url::toRoute('user/atualizar', $user->idutilizador)) ?>" method="POST">
                     <?php } else { ?>

@@ -12,7 +12,7 @@ class UserController extends BaseController
     public function index()
     {
         $error = "";
-
+        // TODO: remover este if na entrega do projeto - serve so de debug
         if (Session::has("error-message")) {
             $error = Session::get("error-message");
             Session::remove("error-message");
@@ -26,7 +26,7 @@ class UserController extends BaseController
         //obtem os dados do post do form
         $user = Post::getAll();
 
-        //guarda o utilizador na base de dados se ainda não existir um nome e pais igual
+        //guarda o utilizador na base de dados se ainda não existir um nome ou email igual
         $exist = User::all(array('conditions' => array('username = ? OR email = ?', $user['username'], $user['email'])));
 
         if ($exist) {
@@ -53,22 +53,22 @@ class UserController extends BaseController
 
         Redirect::toRoute('admin/contas');
     }
-    
+
     public function editar($idutilizador)
     {
         $user = User::find([$idutilizador]);
-        
+
         if (!is_null($user)) {
-            
+
             return View::make('home.register', ['user' => $user]);
         }
     }
-    
+
     public function atualizar($idutilizador)
     {
         $user = User::find([$idutilizador]);
         $user->update_attributes(Post::getAll());
-        
+
         if ($user->is_valid()) {
             $user->save();
             Redirect::toRoute('admin/contas');
@@ -78,33 +78,56 @@ class UserController extends BaseController
         }
     }
 
-    public function loginView(){
+    public function loginView()
+    {
+
+
+        if (Session::has('Authentication')) {
+            var_dump(Session::get('Authentication'));
+        }
+
         return View::make('home.login');
     }
 
-    public function login(){
-        $user = Post::getAll();
-    //    $user = User::find_by_perfil('passageiro');
-        $exist = User::all(array('conditions'=> array('username = ? AND password = ?', $user['username'], $user['password'])));
-        
-        if ($exist){
-            //Session::destroy();
-            Session::set("Authentication", $user['username']);
-            $user = User::all();
+    public function login()
+    {
+        $formData = Post::getAll();
+        //    $user = User::find_by_perfil('passageiro');
+        $user = User::find(array('conditions' => array('username = ? AND password = ?', $formData['username'], $formData['password'])));
 
-        switch ($user->perfil) {
-            case 'administrador':
-                return View::make('admin.contas', ['user' => $user]);
-                break;
-            
-            default:
-                # code...
-                break;
+        if ($user) {
+            Session::destroy();
+            Session::set("Authentication", ['user' => $user->username, 'perfil' => $user->perfil]);
+
+            switch ($user->perfil) {
+                case 'administrador':
+                    return  Redirect::toRoute('admin/contas');
+
+                case 'passageiro':
+                    // TODO: return Redirect::toRoute...
+                    break;
+
+                case 'gestor de voo':
+                    // TODO: return Redirect::toRoute...
+                    break;
+
+                case 'operador de checkin':
+                    // TODO: return Redirect::toRoute...
+                    break;
+
+                default:
+                    Redirect::toRoute('home/login');
+                    return;
+            }
         }
 
-        } else {
-            Redirect::toRoute('user/register');
-        }
+        Redirect::toRoute('user/register');
+    }
 
+    public function logout()
+    {
+
+        Session::destroy();
+        Redirect::toRoute(('home/login'));
     }
 }

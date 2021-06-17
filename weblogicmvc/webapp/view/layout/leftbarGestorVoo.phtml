@@ -1,0 +1,55 @@
+<?php
+
+use ArmoredCore\WebObjects\Asset;
+use ArmoredCore\WebObjects\URL;
+
+
+
+?>
+
+
+<div id="wrapper">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center mb-1" href="index.html">
+            <div class="sidebar-brand-icon rotate-n-15">
+            </div>
+            <img src="<?= Asset::image('/myimgs/minilogo.jpg') ?>">
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0 mt-2">
+
+        <!-- Nav Item - Voos -->
+        <li class="nav-item">
+            <a class="nav-link " href="<?= URL::toRoute('gestor/voos') ?>" aria-expanded="true">
+                <i class="fas fa-plane-departure"></i>
+                <span>Voos</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - escalas -->
+        <li class="nav-item">
+            <a class="nav-link " href="<?= URL::toRoute('gestor/escalas') ?>" aria-expanded="true">
+                <i class="fas fa-route"></i>
+                <span>Escalas</span>
+            </a>
+        </li>
+        <!-- Nav Item - aviões -->
+        <li class="nav-item">
+            <a class="nav-link" href="<?= URL::toRoute('gestor/avioes') ?>" aria-expanded="true">
+                <i class="fas fa-plane"></i>
+                <span>Aviões</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+        <div style="margin-bottom:25rem"></div>
+        <hr class="sidebar-divider my-0 mb-2">
+        <!-- Logout -->
+        <div class="text-center d-none d-md-inline">
+            <a href="<?= URL::toRoute('home/logout') ?>"> <i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </ul>
+</div>

@@ -8,8 +8,6 @@ use ArmoredCore\WebObjects\View;
 
 class AirportController extends BaseController
 {
-
-
     public function criar()
     {
         // obtem o aeroporto do POST do form

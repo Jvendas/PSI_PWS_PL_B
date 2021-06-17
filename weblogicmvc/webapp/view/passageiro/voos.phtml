@@ -1,0 +1,198 @@
+<?php
+
+use ArmoredCore\WebObjects\Asset;
+use ArmoredCore\WebObjects\Layout;
+use ArmoredCore\WebObjects\URL;
+use ArmoredCore\WebObjects\Data;
+
+// $flights = Data::get('flights');
+$airports = Data::get('airports');
+$escalas = Data::get('escalas');
+
+// var_dump($escalas);
+
+
+// $flight1 = new Dadosvoo();
+// $flight2 = new Dadosvoo();
+
+// $flight1->horarioPartida = "12-12-2121 10:00";
+// $flight1->horarioChegada = "12-12-2121 10:00";
+// $flight1->distancia = "112km";
+// $flight1->escalas = "Porto-Lisboa; lisboa-marrocos";
+// $flight1->preco = "120€";
+
+// $flights=[];
+// array_push($flights, $flight1);
+
+
+
+
+?>
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Custom fonts for this template-->
+    <link href="<?= Asset::css('/template/fontawesome-free/css/all.min.css') ?>" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,200,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="<?= Asset::css('/template/sb-admin-2.css') ?>" rel="stylesheet">
+    <title>FlightTravelAir</title>
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <?php
+        Layout::includeLayout('leftbarPassageiro')
+        ?>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mt-3 mb-4 text-gray-800">Passageiro</h1>
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <i class="fas fa-search"></i> Pesquisar Voos
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <form method="POST" action="<?= Url::toRoute('passageiro/voos') ?>">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="vooida" onclick="visibility(this)">
+                                    <label class="form-check-label" for="vooIda">Só ida</label>
+                                </div>
+                                <!-- Selecionar Aeroportos - Origem-->
+                                <div class="form-row ">
+                                    <div class="form-group mr-4 col-md-3">
+                                        <select name="origem" class="custom-select">
+                                            <option value="" hidden>Origem</option>
+                                            <?php foreach ($airports as $airport) { ?>
+                                                <option value="<?= $airport->idaeroporto ?>"><?= $airport->nome . ' (' . $airport->pais . ')' ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <!-- Selecionar Aeroportos - Destino-->
+                                    <div class="form-group col-md-3">
+                                        <select id="destino" name="destino" class="custom-select">
+                                            <option value="" hidden>Destino</option>
+                                            <?php foreach ($airports as $airport) { ?>
+                                                <option value="<?= $airport->idaeroporto ?>"><?= $airport->nome . ' (' . $airport->pais . ')' ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Selecionar Datas (Partida/Regresso) -->
+                                <div class="form-row">
+                                    <div class="form-group mr-4 col-md-3">
+                                        <input name="dataPartida" placeholder="Partida" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" />
+                                    </div>
+                                    <div class="form-group  col-md-3">
+                                        <input id="regresso" name="dataRegresso" placeholder="Regresso" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" />
+                                    </div>
+                                </div>
+                                <!-- Botão consultar voos -->
+                                <div class="form-row">
+                                    <div class="col-md-5"></div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-outline-info mb-2">Consultar Voos</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tabela dos voos -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <i class="fas fa-plane-departure"></i> Lista de Voos
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 2%"></th>
+                                        <th style="width: 19%">Horário Partida</th>
+                                        <th style="width: 19%">Horário Regresso</th>
+                                        <th style="width: 19%">Distância</th>
+                                        <th style="width: 22%">Escalas</th>
+                                        <th style="width: 19%">Preço</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    foreach ($escalas as $escala) {
+                                    ?>
+                                        <tr>
+                                            <td>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                                    <label class="custom-control-label" for="customCheck1"></label>
+                                                </div>
+                                            </td>
+                                            <td><?= $escala->horarioPartida ?></td>
+                                            <td><?= $escala->horarioChegada ?></td>
+                                            <td><?= $escala->distancia ?> km</td>
+                                            <td><?= $escala->escalas ?></td>
+                                            <td><?= $escala->preco ?> €</td>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                            <div class="form-group" style="float: right;">
+                                <button type="submit" class="btn btn-outline-info mb-2">Comprar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Funcão desativar elementos - vooida -->
+        <script>
+            function visibility(vooida) {
+
+                var regresso = document.getElementById('regresso');
+
+                if (vooida.checked == true) {
+                    regresso.style.visibility = "hidden";
+                } else {
+                    regresso.style.visibility = "visible";
+                }
+
+            }
+        </script>
+
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="<?= Asset::js('/sb-admin-2.min.js') ?>"></script>
+
+        <!-- Page level plugins -->
+        <script src="vendor/chart.js/Chart.min.js"></script>
+
+        <!-- Page level custom scripts -->
+        <script src="<?= Asset::js('/demo/chart-area-demo.js') ?>"></script>
+        <script src="<?= Asset::js('/demo/chart-pie-demo.js') ?>"></script>
+
+</body>
+
+</html>
+
+<?php ?>

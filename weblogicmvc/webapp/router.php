@@ -38,9 +38,20 @@ Router::post('aeroporto/eliminar',             'AirportController/eliminar');
 Router::post('aeroporto/editar',               'AirportController/editar');
 Router::post('aeroporto/atualizar',            'AirportController/atualizar');
 
-//
+// login
 Router::get('home/login',                       'UserController/loginView');
 Router::post('home/login',                      'UserController/login');
+Router::post('home/logout',                     'UserController/logout');
+Router::get('home/logout',                      'UserController/logout');
+
+//Passageiro
+Router::get('passageiro/voos',                  'PassageiroController/index');
+Router::post('passageiro/voos',                 'PassageiroController/consultar');
+Router::get('passageiro/passagens',             'PassageiroController/passagensView');
+Router::get('passageiro/perfil',                'PassageiroController/perfilView');
+
+
+
 
 
 

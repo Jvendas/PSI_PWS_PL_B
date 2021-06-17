@@ -18,7 +18,7 @@ class UserController extends BaseController
             Session::remove("error-message");
         }
 
-        return View::make('home.register', ['errorMessage' => $error]);
+        return View::make('home.register', ['isAdmin' => $this->isAdmin(), 'errorMessage' => $error]);
     }
 
     public function registar()
@@ -35,6 +35,12 @@ class UserController extends BaseController
         } else {
             User::create($user);
             Session::set("success-message", "Utilizador " . $user['username'] . " criado com sucesso!");
+
+            if ($this->isAdmin()) {
+                Redirect::toRoute('admin/contas');
+                return;
+            }
+
             Redirect::toRoute('home/login');
         }
     }
@@ -56,11 +62,10 @@ class UserController extends BaseController
 
     public function editar($idutilizador)
     {
-        $user = User::find([$idutilizador]);
+        $user = User::find([$idutilizador]); // $user to edit
 
         if (!is_null($user)) {
-
-            return View::make('home.register', ['user' => $user]);
+            return View::make('home.register', ['user' => $user, 'isAdmin' => $this->isAdmin()]);
         }
     }
 
@@ -71,17 +76,23 @@ class UserController extends BaseController
 
         if ($user->is_valid()) {
             $user->save();
-            Redirect::toRoute('admin/contas');
-        } else {
-            // TODO: show errors
-            //Redirect::flashToRoute('aeroporto/editar', ['airport' => $airport]);
+        }
+        switch ($user->perfil) {
+
+            case 'administrador':
+
+                return Redirect::toRoute('admin/contas');
+                break;
+
+            case 'passageiro':
+                Session::set("success-message", "Dados alterados com sucesso");
+                return Redirect::toRoute('passageiro/perfil');
+                break;
         }
     }
 
     public function loginView()
     {
-
-
         if (Session::has('Authentication')) {
             var_dump(Session::get('Authentication'));
         }
@@ -101,14 +112,14 @@ class UserController extends BaseController
 
             switch ($user->perfil) {
                 case 'administrador':
-                    return  Redirect::toRoute('admin/contas');
+                    return Redirect::toRoute('admin/contas');
 
                 case 'passageiro':
-                    // TODO: return Redirect::toRoute...
+                    return Redirect::toRoute('passageiro/voos');
                     break;
 
                 case 'gestor de voo':
-                    // TODO: return Redirect::toRoute...
+                 
                     break;
 
                 case 'operador de checkin':
@@ -124,9 +135,21 @@ class UserController extends BaseController
         Redirect::toRoute('user/register');
     }
 
+    public function isAdmin()
+    {
+        $userAuth = Session::get('Authentication');
+
+        if ($userAuth["perfil"] != 'administrador') {
+
+            return false;
+        }
+
+        return true;
+    }
+
+
     public function logout()
     {
-
         Session::destroy();
         Redirect::toRoute(('home/login'));
     }

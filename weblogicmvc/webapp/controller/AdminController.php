@@ -19,9 +19,9 @@ class AdminController extends BaseController
         if ($userAuth["perfil"] != 'administrador') {
             return Redirect::toRoute('home/login');
         }
+        // obter todos os dados da base de dados de perfis especificos       
+        $users = User::all(array('conditions' => array('perfil = ? OR perfil = ?', "gestor de voo", "operador de checkin")));
 
-        // obter todos os dados da base de dados
-        $users = User::all();
         return View::make('admin.contas', ['users' => $users]);
     }
 
@@ -59,4 +59,6 @@ class AdminController extends BaseController
 
         return View::make('admin.aeroportos', ['airports' => $airports, 'errorMessage' => $error, 'successMessage' => $success]);
     }
+
+   
 }

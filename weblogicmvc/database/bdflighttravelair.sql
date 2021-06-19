@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 30-Maio-2021 às 15:47
+-- Tempo de geração: 19-Jun-2021 às 17:48
 -- Versão do servidor: 5.7.31
 -- versão do PHP: 7.3.21
 
@@ -51,14 +51,7 @@ CREATE TABLE IF NOT EXISTS `airports` (
   `pais` varchar(100) NOT NULL,
   `cidade` varchar(100) NOT NULL,
   PRIMARY KEY (`idaeroporto`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `airports`
---
-
-INSERT INTO `airports` (`idaeroporto`, `nome`, `pais`, `cidade`) VALUES
-(26, 'oiu', 'asd', 'asd');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -154,15 +147,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`idutilizador`),
   UNIQUE KEY `idutilizador_UNIQUE` (`idutilizador`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `users`
---
-
-INSERT INTO `users` (`idutilizador`, `nome`, `datanascimento`, `email`, `telefone`, `username`, `password`, `perfil`) VALUES
-(1, 'Ana', '2021-05-10', 'admfmf@gmail.com', 918673463, 'AnaC13', '12345', 'passageiro'),
-(6, 'dsa', '2021-05-13', 'dsa@ht.co', 123, 'dsa', 'dsa', 'gestor de voo');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Restrições para despejos de tabelas
@@ -178,7 +163,6 @@ ALTER TABLE `flights`
 -- Limitadores para a tabela `scales`
 --
 ALTER TABLE `scales`
-  ADD CONSTRAINT `scales_ibfk_3` FOREIGN KEY (`idescala`) REFERENCES `scales` (`idescala`),
   ADD CONSTRAINT `scales_ibfk_4` FOREIGN KEY (`idvoo`) REFERENCES `flights` (`idvoo`),
   ADD CONSTRAINT `scales_ibfk_5` FOREIGN KEY (`idaeroportoorigem`) REFERENCES `airports` (`idaeroporto`),
   ADD CONSTRAINT `scales_ibfk_6` FOREIGN KEY (`idaeroportodestino`) REFERENCES `airports` (`idaeroporto`);

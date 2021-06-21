@@ -1,5 +1,7 @@
 # PSI_PWS_PL_B
 
+![logo](doc/logoipl.jpg)
+
 Autor: Ana margarida Ferreira Cação
 - nº estudante: 2201159
 - Git: https://github.com/Jvendas/PSI_PWS_PL_B.git

@@ -1,8 +1,11 @@
-<?php 
+<?php
+
 use ArmoredCore\WebObjects\Asset;
 use ArmoredCore\WebObjects\Layout;
 use ArmoredCore\WebObjects\URL;
 use ArmoredCore\WebObjects\Data;
+
+$tickets = Data::get('tickets');
 
 ?>
 
@@ -29,3 +32,52 @@ use ArmoredCore\WebObjects\Data;
         <?php
         Layout::includeLayout('leftbarPassageiro')
         ?>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div class="container-fluid">
+                <h1 class="h3 mt-3 mb-4 text-gray-800">Passagens</h1>
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <i class="fas fa-list"></i> Lista Passagens
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5%">Id</th>
+                                        <th style="width: 30%">Ida</th>
+                                        <th style="width: 30%">Volta</th>
+                                        <th style="width: 15%">Data Compra</th>
+                                        <th style="width: 10%">Preço</th>
+                                        <th style="width: 3%">Checkin</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    foreach ($tickets as $ticket) {
+                                    ?>
+                                        <tr>
+                                            <td><?= $ticket->idpassagem ?></td>
+                                            <td><?= $ticket->ida ?></td>
+                                            <?php if (strcmp($ticket->ida, $ticket->volta) == 0) { ?>
+                                                <td>-</td>
+                                            <?php } else { ?>
+                                                <td><?= $ticket->volta ?></td>
+                                            <?php } ?>
+                                            <td><?= $ticket->dataCompra->format('Y-m-d h:i') ?></td>
+                                            <td><?= $ticket->preco ?> €</td>
+                                            <?php if ($ticket->checkin == 1) { ?>
+                                                <td> ✔ </td>
+                                            <?php } else { ?>
+                                                <td> ❌ </td>
+                                            <?php } ?>
+                                        <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

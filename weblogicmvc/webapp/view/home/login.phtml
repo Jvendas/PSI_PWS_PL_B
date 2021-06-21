@@ -1,31 +1,86 @@
-<?php   
+<?php
+
 use ArmoredCore\WebObjects\Asset;
 use ArmoredCore\WebObjects\Layout;
 use ArmoredCore\WebObjects\URL;
 use ArmoredCore\WebObjects\Data;
+
 ?>
 
 <html>
+
 <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <title>Teste log in page</title>
-    <link rel="stylesheet" type="text/css" href="<?= Asset::css('login.css')?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Custom fonts for this template-->
+    <link href="<?= Asset::css('/template/fontawesome-free/css/all.min.css') ?>" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,200,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="<?= Asset::css('/template/sb-admin-2.css') ?>" rel="stylesheet">
+    <title>FlightTravelAir</title>
+
+    <style>
+        .center-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .login-image {
+            background: url(<?= Asset::image('/myimgs/logo.jpg') ?>);
+            background-position: center;
+            background-size: cover;
+        }
+    </style>
 </head>
+
 <body>
+    <div class="container center-container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+            <div class="col-xl-12 col-lg-12 col-md-9">
+                <div class="card o-hidden border-1 shadow-lg my-5">
+                    <div class="card-body p-0">
 
+                        <!-- mensagens de erro, sucesso e aviso -->
+                        <?php Layout::includeLayout('mensagens') ?>
 
-<div id="image" style="height: 200px; width: 50%; position: center;">
-    <img src="<?= Asset::image('/myimgs/logo.jpg')?>" alt="logo"> 
-</div>
-<div id="bodyform">
-    <form action="<?php echo (Url::toRoute('home/login'));?>" method="POST">
-        <input type="user" name="username" placeholder="Username">  
-        <input type="password" name="password" placeholder="Password">
-        <input type="submit" value="Log in">
-        <strong>Sign In</strong></a>
-
-    </form>
-</div>
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block login-image"></div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Bem-vindo!</h1>
+                                    </div>
+                                    <form action="<?php Url::toRoute('home/login') ?>" method="POST" class="user">
+                                        <div class="form-group">
+                                            <input name="username" type="textx" class="form-control form-control-user" aria-describedby="emailHelp" placeholder="Username">
+                                        </div>
+                                        <div class="form-group">
+                                            <input name="password" type="password" class="form-control form-control-user" placeholder="Password">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
+                                            Login
+                                        </button>
+                                    </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small" href="<?= Url::toRoute('user/register') ?>">Create an Account!</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>

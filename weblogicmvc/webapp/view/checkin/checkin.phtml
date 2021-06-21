@@ -1,0 +1,93 @@
+<?php
+
+use ArmoredCore\WebObjects\Asset;
+use ArmoredCore\WebObjects\Layout;
+use ArmoredCore\WebObjects\URL;
+use ArmoredCore\WebObjects\Data;
+
+?>
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Custom fonts for this template-->
+    <link href="<?= Asset::css('/template/fontawesome-free/css/all.min.css') ?>" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="<?= Asset::css('/template/sb-admin-2.css') ?>" rel="stylesheet">
+    <title>FlightTravelAir</title>
+</head>
+
+<body>
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <?php
+        Layout::includeLayout('leftbarCheckin')
+        ?>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div class="container-fluid">
+                <!-- Page Heading -->
+                <h1 class="h3 mt-3 mb-4 text-gray-800">Checkin</h1>
+
+                <!-- mensagens de erro, sucesso e aviso -->
+                <?php Layout::includeLayout('mensagens') ?>
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <i class="fas fa-plus"></i> Checkin
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <form action="<?php echo (Url::toRoute('checkin/')); ?>" method="post">
+                                    <!-- checkin -->
+                                    <div class="form-group">
+                                        <label for="passagem">ID Passagem</label>
+                                        <input value="" type="number" min="0" step="0.01" class="form-control" id="passagem" name="passagem">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="telefone">Telefone</label>
+                                        <input value="" type="number" min="0" class="form-control" id="telefone" name="telefone">
+                                    </div>
+                                    <!-- Botao checkin -->
+                                    <button type="submit" style="float: right;" class="btn btn-outline-success mb-2">Checkin</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="<?= Asset::js('/sb-admin-2.min.js') ?>"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="<?= Asset::js('/demo/chart-area-demo.js') ?>"></script>
+    <script src="<?= Asset::js('/demo/chart-pie-demo.js') ?>"></script>
+
+</body>
+
+</html>
+
+<?php ?>

@@ -1,0 +1,123 @@
+ <?php
+
+    use ArmoredCore\WebObjects\Asset;
+    use ArmoredCore\WebObjects\Layout;
+    use ArmoredCore\WebObjects\URL;
+    use ArmoredCore\WebObjects\Data;
+
+    $checkinsOk = Data::get('checkinsOk');
+    $checkinsEmFalta = Data::get('checkinsEmFalta');
+
+    ?>
+
+ <!doctype html>
+ <html lang="en">
+
+ <head>
+     <!-- Required meta tags -->
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+     <!-- Custom fonts for this template-->
+     <link href="<?= Asset::css('/template/fontawesome-free/css/all.min.css') ?>" rel="stylesheet" type="text/css">
+     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,200,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+     <!-- Custom styles for this template-->
+     <link href="<?= Asset::css('/template/sb-admin-2.css') ?>" rel="stylesheet">
+     <title>FlightTravelAir</title>
+ </head>
+
+ <body>
+     <div id="wrapper">
+         <!-- Sidebar -->
+         <?php Layout::includeLayout('leftbarCheckin') ?>
+
+         <div id="content-wrapper" class="d-flex flex-column">
+             <div class="container-fluid">
+                 <h1 class="h3 mt-3 mb-4 text-gray-800">Histórico Checkins</h1>
+
+                 <!-- checkins ok -->
+                 <div class="card shadow mb-4">
+                     <div class="card-header py-3">
+                         <i class="fas fa-check-circle"></i> Checkin efetuados
+                     </div>
+                     <div class="card-body">
+                         <div class="table-responsive">
+                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                 <thead>
+                                     <tr>
+                                         <th style="width: 3%">Id</th>
+                                         <th style="width: 18%">Nome Passageiro</th>
+                                         <th style="width: 18%">Telefone Passageio</th>
+                                         <th style="width: 18%">Aeroporto Origem</th>
+                                         <th style="width: 18%">Aeroporto Destino</th>
+                                         <th style="width: 18%">Data Compra</th>
+                                         <th style="width: 10%">Checkin</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+                                     <?php
+                                        foreach ($checkinsOk as $ticket) { ?>
+                                         <tr>
+                                             <td><?= $ticket->idpassagem ?></td>
+                                             <td><?= $ticket->nomeUser ?></td>
+                                             <td><?= $ticket->telefoneUser ?></td>
+                                             <td><?= $ticket->nomeAeroportoOrigem . " (" . $ticket->paisAeroportoOrigem . ")" ?></td>
+                                             <td><?= $ticket->nomeAeroportoDestino . " (" . $ticket->paisAeroportoDestino . ")" ?></td>
+                                             <td><?= $ticket->dataCompra->format('Y-m-d h:i') ?></td>
+                                             <?php if ($ticket->checkin == 1) { ?>
+                                                 <td> ✔ </td>
+                                             <?php } else { ?>
+                                                 <td> ❌ </td>
+                                             <?php } ?>
+                                         <?php } ?>
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div>
+                 </div>
+
+                 <!-- checkins em falta -->
+                 <div class="card shadow mb-4">
+                     <div class="card-header py-3">
+                         <i class="fas fa-exclamation-circle"></i> Checkins em falta
+                     </div>
+                     <div class="card-body">
+                         <div class="table-responsive">
+                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                 <thead>
+                                     <tr>
+                                         <th style="width: 3%">Id</th>
+                                         <th style="width: 18%">Nome Passageiro</th>
+                                         <th style="width: 18%">Telefone Passageio</th>
+                                         <th style="width: 18%">Aeroporto Origem</th>
+                                         <th style="width: 18%">Aeroporto Destino</th>
+                                         <th style="width: 18%">Data Compra</th>
+                                         <th style="width: 10%">Checkin</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+                                     <?php
+                                        foreach ($checkinsEmFalta as $ticket) { ?>
+                                         <tr>
+                                             <td><?= $ticket->idpassagem ?></td>
+                                             <td><?= $ticket->nomeUser ?></td>
+                                             <td><?= $ticket->telefoneUser ?></td>
+                                             <td><?= $ticket->nomeAeroportoOrigem . " (" . $ticket->paisAeroportoOrigem . ")" ?></td>
+                                             <td><?= $ticket->nomeAeroportoDestino . " (" . $ticket->paisAeroportoDestino . ")" ?></td>
+                                             <td><?= $ticket->dataCompra->format('Y-m-d h:i') ?></td>
+                                             <?php if ($ticket->checkin == 1) { ?>
+                                                 <td> ✔ </td>
+                                             <?php } else { ?>
+                                                 <td> ❌ </td>
+                                             <?php } ?>
+                                         <?php } ?>
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </body>

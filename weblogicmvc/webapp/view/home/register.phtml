@@ -7,8 +7,8 @@ use ArmoredCore\WebObjects\Data;
 
 // declaracação de variaveis para a vista
 $user = Data::get('user');
-$errorMessage = Data::get('errorMessage');
 $isAdmin = Data::get('isAdmin');
+$authPerfil = Data::get('authPerfil');
 
 ?>
 
@@ -30,16 +30,38 @@ $isAdmin = Data::get('isAdmin');
 </head>
 
 <body>
+    <!-- Sidebar -->
+    <?php
+
+    if (!is_null($authPerfil)) {
+        switch ($authPerfil) {
+            case 'administrador':
+                Layout::includeLayout('leftbarAdmin');
+                break;
+
+            case 'passageiro':
+                Layout::includeLayout('leftbarPassageiro');
+                break;
+
+            case 'gestor de voo':
+                Layout::includeLayout('leftbarGestorVoo');
+                break;
+
+            case 'operador de checkin':
+                Layout::includeLayout('leftbarCheckin');
+                break;
+
+            default:
+                return;
+        }
+    }
+    ?>
 
     <div class="container" style="position: fixed; top:50%; left:50%;transform: translate(-50%, -50%);">
         <div class="card bg-light">
 
-            <!-- mensagem de erro -->
-            <?php if (!is_null($errorMessage) && is_string($errorMessage) && !empty($errorMessage)) { ?>
-                <div class="alert alert-danger" role="alert">
-                    <?= $errorMessage; ?>
-                </div>
-            <?php } ?>
+            <!-- mensagens de erro, sucesso e aviso -->
+            <?php Layout::includeLayout('mensagens') ?>
 
             <!-- criar conta form -->
             <div class="card-body mx-auto" style="max-width: 400px;">
@@ -92,7 +114,7 @@ $isAdmin = Data::get('isAdmin');
                             <div class="input-group-prepend">
                                 <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
                             </div>
-                            <input value="<?php echo ($user->telefone); ?>" name="telefone" class="form-control" placeholder="Telefone" type="text">
+                            <input value="<?php echo ($user->telefone); ?>" name="telefone" class="form-control" placeholder="Telefone" type="number" min="0">
                         </div>
                         <!-- data de nascimento -->
                         <div class="form-group input-group">
@@ -137,8 +159,12 @@ $isAdmin = Data::get('isAdmin');
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success btn-block">Criar Conta</button>
                             </div>
+
                             <!-- login link -->
-                            <p class="text-center">Já tens conta?<a href="<?= Url::toRoute('home/login') ?>"> Log In</a> </p>
+                            <hr>
+                            <div class="text-center">
+                                <a class="small" href="<?= Url::toRoute('home/login') ?>">Já tens conta? Log In</a>
+                            </div>
                         <?php } ?>
                         </form>
             </div>

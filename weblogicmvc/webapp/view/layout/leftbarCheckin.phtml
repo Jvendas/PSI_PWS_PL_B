@@ -17,27 +17,19 @@ use ArmoredCore\WebObjects\URL;
         <!-- Divider -->
         <hr class="sidebar-divider my-0 mt-2">
 
-        <!-- Nav Item - Voos -->
+        <!-- Nav Item - Checkin -->
         <li class="nav-item">
-            <a class="nav-link " href="<?= URL::toRoute('gestor/voos') ?>" aria-expanded="true">
-                <i class="fas fa-plane-departure"></i>
-                <span>Voos</span>
+            <a class="nav-link" href="<?= URL::toRoute('checkin/') ?>" aria-expanded="true">
+                <i class="far fa-check-circle"></i>
+                <span>Checkin</span>
             </a>
         </li>
 
-        <!-- Nav Item - escalas -->
+        <!-- Nav Item - histórico -->
         <li class="nav-item">
-            <a class="nav-link " href="<?= URL::toRoute('gestor/escalas') ?>" aria-expanded="true">
-                <i class="fas fa-route"></i>
-                <span>Escalas</span>
-            </a>
-        </li>
-
-        <!-- Nav Item - aviões -->
-        <li class="nav-item">
-            <a class="nav-link" href="<?= URL::toRoute('gestor/avioes') ?>" aria-expanded="true">
-                <i class="fas fa-plane"></i>
-                <span>Aviões</span>
+            <a class="nav-link " href="<?= URL::toRoute('checkin/historico') ?>" aria-expanded="true">
+                <i class="fas fa-list"></i>
+                <span>Histórico</span>
             </a>
         </li>
 

@@ -1,0 +1,47 @@
+<?php
+use ArmoredCore\WebObjects\Session;
+?>
+
+<div>
+    <!-- mensagem de sucesso -->
+    <?php
+    $successMessage = null;
+    if (Session::has("successMessage")) {
+        $successMessage = Session::get("successMessage");
+        Session::remove("successMessage");
+    }
+
+    if (!is_null($successMessage) && is_string($successMessage) && !empty($successMessage)) { ?>
+        <div class="alert alert-success" role="alert">
+            <?= $successMessage; ?>
+        </div>
+    <?php } ?>
+
+    <!-- mensagem de erro -->
+    <?php
+    $errorMessage = null;
+    if (Session::has("errorMessage")) {
+        $errorMessage = Session::get("errorMessage");
+        Session::remove("errorMessage");
+    }
+
+    if (!is_null($errorMessage) && is_string($errorMessage) && !empty($errorMessage)) { ?>
+        <div class="alert alert-danger" role="alert">
+            <?= $errorMessage; ?>
+        </div>
+    <?php } ?>
+
+    <!-- mensagem de aviso -->
+    <?php
+    $warningMessage = null;
+    if (Session::has("warningMessage")) {
+        $warningMessage = Session::get("warningMessage");
+        Session::remove("warningMessage");
+    }
+
+    if (!is_null($warningMessage) && is_string($warningMessage) && !empty($warningMessage)) { ?>
+        <div class="alert alert-warning" role="alert">
+            <?= $warningMessage; ?>
+        </div>
+    <?php } ?>
+</div>

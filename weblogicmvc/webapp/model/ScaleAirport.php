@@ -1,15 +1,19 @@
 <?php
 
-class Dadosvoo
+
+
+class ScaleAirport
 {
+    public $idescala;
     public $idvoo;
+    public $idaeroportoOrigem; 
+    public $idaeroportoDestino;    
     public $nomeAeroportoOrigem;
     public $nomeAeroportoDestino;
     public $paisAeroportoOrigem;
     public $paisAeroportoDestino;
     public $horarioPartida;
-    public $horarioChegada;
+    public $horarioDestino;
     public $distancia;
-    public $preco;
-    public $descricao;
+    public $aviao;
 }

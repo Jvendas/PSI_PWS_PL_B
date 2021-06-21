@@ -2,18 +2,16 @@
 
 use ArmoredCore\WebObjects\Asset;
 use ArmoredCore\WebObjects\URL;
+
 ?>
 
-<!-- Page Wrapper -->
 <div id="wrapper">
-    <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center mb-1" href="index.html">
-            <div class="sidebar-brand-icon rotate-n-15">
+        <a class="sidebar-brand d-flex align-items-center justify-content-left" href="index.html">
+            <div class="sidebar-brand-icon ">
+                <img src="<?= Asset::image('/myimgs/minilogo.jpg') ?>">
             </div>
-            <img src="<?= Asset::image('/myimgs/minilogo.jpg') ?>">
         </a>
 
         <!-- Divider -->
@@ -35,18 +33,23 @@ use ArmoredCore\WebObjects\URL;
             </a>
         </li>
 
+        <!-- Nav Item - Perfil -->
+        <li class="nav-item">
+            <a class="nav-link" href="<?= URL::toRoute('user/perfil') ?>" aria-expanded="true">
+                <i class="fas fa-users-cog"></i>
+                <span>Perfil</span>
+            </a>
+        </li>
+
         <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block">
+        <hr class="sidebar-divider my-0">
 
-        <div style="margin-bottom:30rem"></div>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0 mb-2">
-
-        <!-- Sidebar Toggler (Sidebar) -->
-        <div class="text-center d-none d-md-inline">
-           <a href="<?= URL::toRoute('home/logout') ?>"> <i class="fas fa-sign-out-alt"></i> Logout</a>
-        </div>
+        <!-- Logout -->
+        <li class="nav-item">
+            <a class="nav-link" href="<?= URL::toRoute('home/logout') ?>" aria-expanded="true">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </li>
     </ul>
-    <!-- End of Sidebar -->
 </div>

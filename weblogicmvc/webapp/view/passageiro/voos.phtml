@@ -5,27 +5,15 @@ use ArmoredCore\WebObjects\Layout;
 use ArmoredCore\WebObjects\URL;
 use ArmoredCore\WebObjects\Data;
 
-// $flights = Data::get('flights');
 $airports = Data::get('airports');
-$escalas = Data::get('escalas');
 
-// var_dump($escalas);
+$idas = Data::get('idas');
+$voltas = Data::get('voltas');
 
-
-// $flight1 = new Dadosvoo();
-// $flight2 = new Dadosvoo();
-
-// $flight1->horarioPartida = "12-12-2121 10:00";
-// $flight1->horarioChegada = "12-12-2121 10:00";
-// $flight1->distancia = "112km";
-// $flight1->escalas = "Porto-Lisboa; lisboa-marrocos";
-// $flight1->preco = "120€";
-
-// $flights=[];
-// array_push($flights, $flight1);
-
-
-
+$formData = Data::get('formData');
+if (!is_array($formData)) {
+    $formData = [];
+}
 
 ?>
 
@@ -49,15 +37,16 @@ $escalas = Data::get('escalas');
 <body>
     <div id="wrapper">
         <!-- Sidebar -->
-        <?php
-        Layout::includeLayout('leftbarPassageiro')
-        ?>
+        <?php Layout::includeLayout('leftbarPassageiro') ?>
 
         <div id="content-wrapper" class="d-flex flex-column">
             <div class="container-fluid">
 
                 <!-- Page Heading -->
                 <h1 class="h3 mt-3 mb-4 text-gray-800">Passageiro</h1>
+
+                <!-- mensagens de erro, sucesso e aviso -->
+                <?php Layout::includeLayout('mensagens') ?>
 
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
@@ -67,16 +56,18 @@ $escalas = Data::get('escalas');
                         <div class="card-body">
                             <form method="POST" action="<?= Url::toRoute('passageiro/voos') ?>">
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="vooida" onclick="visibility(this)">
+                                    <input type="checkbox" class="form-check-input" id="idaCheck" name="idaCheck" onclick="visibility(this)">
                                     <label class="form-check-label" for="vooIda">Só ida</label>
                                 </div>
                                 <!-- Selecionar Aeroportos - Origem-->
                                 <div class="form-row ">
-                                    <div class="form-group mr-4 col-md-3">
+                                    <div class="form-group mr-2 col-md-3">
                                         <select name="origem" class="custom-select">
                                             <option value="" hidden>Origem</option>
                                             <?php foreach ($airports as $airport) { ?>
-                                                <option value="<?= $airport->idaeroporto ?>"><?= $airport->nome . ' (' . $airport->pais . ')' ?></option>
+                                                <option <?php if (!empty($formData)) {
+                                                            if ($formData["origem"] == $airport->idaeroporto) { ?> selected <?php }
+                                                                                                                    } ?> value="<?= $airport->idaeroporto ?>"><?= $airport->nome . ' (' . $airport->pais . ')' ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
@@ -85,35 +76,44 @@ $escalas = Data::get('escalas');
                                         <select id="destino" name="destino" class="custom-select">
                                             <option value="" hidden>Destino</option>
                                             <?php foreach ($airports as $airport) { ?>
-                                                <option value="<?= $airport->idaeroporto ?>"><?= $airport->nome . ' (' . $airport->pais . ')' ?></option>
+                                                <option <?php if (!empty($formData)) {
+                                                            if ($formData["destino"] == $airport->idaeroporto) { ?> selected <?php }
+                                                                                                                        } ?> value="<?= $airport->idaeroporto ?>"><?= $airport->nome . ' (' . $airport->pais . ')' ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
                                 </div>
                                 <!-- Selecionar Datas (Partida/Regresso) -->
                                 <div class="form-row">
-                                    <div class="form-group mr-4 col-md-3">
-                                        <input name="dataPartida" placeholder="Partida" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" />
+                                    <div class="form-group mr-2 col-md-3">
+                                        <input name="dataPartida" placeholder="Partida" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" <?php if (!empty($formData)) {
+                                                                                                                                                                                                echo ("value=" . $formData["dataPartida"]);
+                                                                                                                                                                                            } ?> />
                                     </div>
-                                    <div class="form-group  col-md-3">
-                                        <input id="regresso" name="dataRegresso" placeholder="Regresso" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" />
+                                    <div class=" form-group col-md-3">
+                                        <input id="regresso" name="dataRegresso" placeholder="Regresso" class="form-control" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" <?php if (!empty($formData) && !array_key_exists("idaCheck", $formData)) {
+                                                                                                                                                                                                                echo ("value=" . $formData["dataRegresso"]);
+                                                                                                                                                                                                            } ?> />
                                     </div>
                                 </div>
+
                                 <!-- Botão consultar voos -->
                                 <div class="form-row">
-                                    <div class="col-md-5"></div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-outline-info mb-2">Consultar Voos</button>
+                                    <div class="form-group mr-2 col-md-4"></div>
+                                    <div class="form-group col-md-2">
+                                        <button type="submit" class="btn btn-info" style="float:right;">Consultar Voos</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-                <!-- Tabela dos voos -->
+
+                <!-- compras -->
+                <!-- Tabela dos voos Ida -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <i class="fas fa-plane-departure"></i> Lista de Voos
+                        <i class="fas fa-plane-departure"></i> Voos de Ida
                     </div>
                     <div class="col-md-12">
                         <div class="card-body">
@@ -121,75 +121,167 @@ $escalas = Data::get('escalas');
                                 <thead>
                                     <tr>
                                         <th style="width: 2%"></th>
-                                        <th style="width: 19%">Horário Partida</th>
-                                        <th style="width: 19%">Horário Regresso</th>
-                                        <th style="width: 19%">Distância</th>
-                                        <th style="width: 22%">Escalas</th>
-                                        <th style="width: 19%">Preço</th>
+                                        <th style="width: 5%">Voo</th>
+                                        <th style="width: 20%">Aeroporto Origem</th>
+                                        <th style="width: 20%">Aeroporto Destino</th>
+                                        <th style="width: 20%">Descricao</th>
+                                        <th style="width: 10%">Horário Partida</th>
+                                        <th style="width: 10%">Horário Chegada</th>
+                                        <th style="width: 5%">Distância</th>
+                                        <th style="width: 5%">Preço</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    foreach ($escalas as $escala) {
+                                    foreach ($idas as $escala) {
                                     ?>
                                         <tr>
                                             <td>
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                                    <label class="custom-control-label" for="customCheck1"></label>
+                                                <div class="form-check">
+                                                    <input type="radio" id="idCompraIda" name="idCompraIda" class="form-check-input position-static" value="<?= $escala->idvoo ?>">
                                                 </div>
                                             </td>
+                                            <td><?= $escala->idvoo ?></td>
+                                            <td><?= $escala->nomeAeroportoOrigem . " (" . $escala->paisAeroportoOrigem . ")" ?> </td>
+                                            <td><?= $escala->nomeAeroportoDestino . " (" . $escala->paisAeroportoDestino . ")" ?> </td>
+                                            <td><?= $escala->descricao ?></td>
                                             <td><?= $escala->horarioPartida ?></td>
                                             <td><?= $escala->horarioChegada ?></td>
                                             <td><?= $escala->distancia ?> km</td>
-                                            <td><?= $escala->escalas ?></td>
                                             <td><?= $escala->preco ?> €</td>
                                             </td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
-                            <div class="form-group" style="float: right;">
-                                <button type="submit" class="btn btn-outline-info mb-2">Comprar</button>
-                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- Tabela dos voos Volta -->
+                <div id="cardVoosDeVolta" class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <i class="fas fa-plane-departure"></i> Voos de Volta
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 2%"></th>
+                                        <th style="width: 5%">Voo</th>
+                                        <th style="width: 20%">Aeroporto Origem</th>
+                                        <th style="width: 20%">Aeroporto Destino</th>
+                                        <th style="width: 20%">Descricao</th>
+                                        <th style="width: 10%">Horário Partida</th>
+                                        <th style="width: 10%">Horário Chegada</th>
+                                        <th style="width: 5%">Distância</th>
+                                        <th style="width: 5%">Preço</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    foreach ($voltas as $escala) {
+                                    ?>
+                                        <tr>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input type="radio" name="idCompraVolta" id="idCompraVolta" class="form-check-input position-static" value="<?= $escala->idvoo ?>">
+                                                </div>
+                                            </td>
+                                            <td><?= $escala->idvoo ?></td>
+                                            <td><?= $escala->nomeAeroportoOrigem . " (" . $escala->paisAeroportoOrigem . ")" ?> </td>
+                                            <td><?= $escala->nomeAeroportoDestino . " (" . $escala->paisAeroportoDestino . ")" ?> </td>
+                                            <td><?= $escala->descricao ?></td>
+                                            <td><?= $escala->horarioPartida ?></td>
+                                            <td><?= $escala->horarioChegada ?></td>
+                                            <td><?= $escala->distancia ?> km</td>
+                                            <td><?= $escala->preco ?> €</td>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- comprar passagens click -->
+                <div class="form-row">
+                    <div class="form-group col-md-10"></div>
+                    <div class="form-group col-md-2">
+                        <button class="btn btn-success" style="width: 100%;" onclick="comprarClick('<?= Url::toRoute('passageiro/comprar') ?>')">Comprar Passagens</button>
+                    </div>
+                    </form>
+                </div>
             </div>
-        </div>
 
-        <!-- Funcão desativar elementos - vooida -->
-        <script>
-            function visibility(vooida) {
 
-                var regresso = document.getElementById('regresso');
+            <!-- Funcão desativar elementos - vooida -->
+            <script>
+                function visibility(vooida) {
 
-                if (vooida.checked == true) {
-                    regresso.style.visibility = "hidden";
-                } else {
-                    regresso.style.visibility = "visible";
+                    var regresso = document.getElementById('regresso');
+
+                    if (vooida.checked == true) {
+                        regresso.style.visibility = "hidden";
+                    } else {
+                        regresso.style.visibility = "visible";
+                    }
+
                 }
 
-            }
-        </script>
+                function comprarClick(url) {
+                    // https://stackoverflow.com/questions/133925/javascript-post-request-like-a-form-submit
 
+                    const form = document.createElement('form');
+                    form.method = 'post';
+                    form.action = url;
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                    params = {
+                        idvooida: document.querySelector('input[name="idCompraIda"]:checked')?.value,
+                        idvoovolta: document.querySelector('input[name="idCompraVolta"]:checked')?.value
+                    }
 
-        <!-- Core plugin JavaScript-->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+                    if (!params?.idvooida) {
+                        window.alert("Selecione pelo menos um voo de ida");
+                        return;
+                    }
 
-        <!-- Custom scripts for all pages-->
-        <script src="<?= Asset::js('/sb-admin-2.min.js') ?>"></script>
+                    if (!params?.idvoovolta) {
+                        params.idvoovolta = "";
+                    }
 
-        <!-- Page level plugins -->
-        <script src="vendor/chart.js/Chart.min.js"></script>
+                    for (const key in params) {
+                        if (params.hasOwnProperty(key)) {
+                            const hiddenField = document.createElement('input');
+                            hiddenField.type = 'hidden';
+                            hiddenField.name = key;
+                            hiddenField.value = params[key];
 
-        <!-- Page level custom scripts -->
-        <script src="<?= Asset::js('/demo/chart-area-demo.js') ?>"></script>
-        <script src="<?= Asset::js('/demo/chart-pie-demo.js') ?>"></script>
+                            form.appendChild(hiddenField);
+                        }
+                    }
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            </script>
+
+            <!-- Bootstrap core JavaScript-->
+            <script src="vendor/jquery/jquery.min.js"></script>
+            <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+            <!-- Core plugin JavaScript-->
+            <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+            <!-- Custom scripts for all pages-->
+            <script src="<?= Asset::js('/sb-admin-2.min.js') ?>"></script>
+
+            <!-- Page level plugins -->
+            <script src="vendor/chart.js/Chart.min.js"></script>
+
+            <!-- Page level custom scripts -->
+            <script src="<?= Asset::js('/demo/chart-area-demo.js') ?>"></script>
+            <script src="<?= Asset::js('/demo/chart-pie-demo.js') ?>"></script>
 
 </body>
 

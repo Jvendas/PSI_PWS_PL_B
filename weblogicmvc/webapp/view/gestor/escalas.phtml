@@ -1,0 +1,249 @@
+<?php
+
+use ArmoredCore\WebObjects\Asset;
+use ArmoredCore\WebObjects\Layout;
+use ArmoredCore\WebObjects\URL;
+use ArmoredCore\WebObjects\Data;
+
+$scales = Data::get('scales');
+$scaleToEdit = Data::get('scaleToEdit');
+$airports = Data::get('airports');
+$flights = Data::get('flights');
+$airplanes = Data::get('airplanes');
+$scaleAirplaneToEdit = Data::get('scaleAirplaneToEdit');
+
+?>
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Custom fonts for this template-->
+    <link href="<?= Asset::css('/template/fontawesome-free/css/all.min.css') ?>" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,200,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="<?= Asset::css('/template/sb-admin-2.css') ?>" rel="stylesheet">
+    <title>FlightTravelAir</title>
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <?php Layout::includeLayout('leftbarGestorVoo') ?>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div class="container-fluid">
+                <h1 class="h3 mt-3 mb-4 text-gray-800">Escalas</h1>
+
+                <!-- mensagens de erro, sucesso e aviso -->
+                <?php Layout::includeLayout('mensagens') ?>
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <i class="fas fa-list"></i> Lista Escalas
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 1%">Voo</th>
+                                        <th style="width: 15%">Aeroporto Origem</th>
+                                        <th style="width: 15%">Aeroporto Destino</th>
+                                        <th style="width: 20%">Aviao</th>
+                                        <th style="width: 12%">Horário Partida</th>
+                                        <th style="width: 12%">Horário Chegada</th>
+                                        <th style="width: 5%">Distância</th>
+                                        <th style="width: 7%">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    foreach ($scales as $scale) {
+                                    ?>
+                                        <tr>
+                                            <td><?= $scale->idvoo ?></td>
+                                            <td><?= $scale->nomeAeroportoOrigem . " (" . $scale->paisAeroportoOrigem . ")" ?></td>
+                                            <td><?= $scale->nomeAeroportoDestino . " (" . $scale->paisAeroportoDestino . ")" ?></td>
+                                            <td><?= $scale->aviao ?></td>
+                                            <td><?= $scale->horarioPartida->format('Y-m-d h:i') ?></td>
+                                            <td><?= $scale->horarioDestino->format('Y-m-d h:i') ?></td>
+                                            <td><?= $scale->distancia ?> km</td>
+                                            <td>
+                                                <!-- editar -->
+                                                <form style="float: left; padding-right: 2px;" action="<?= Url::toRoute('escala/editar', $scale->idescala) ?>" method="POST">
+                                                    <button class="btn btn-info btn-circle btn-sm" type="submit">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                    </button>
+                                                </form>
+                                                <!-- eliminar -->
+                                                <form style="float: left; padding-right: 2px;" action="<?= Url::toRoute('escala/eliminar', $scale->idescala) ?>" method="POST">
+                                                    <button class="btn btn-danger btn-circle btn-sm" type="submit">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- ADD ESCALAS -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <?php if (is_null($scaleToEdit)) {
+                        ?>
+                            <i class="fas fa-plus"></i> Adicionar Escala
+                        <?php } else {
+                        ?>
+                            <i class="fas fa-pencil-alt"></i> Editar Voo
+                        <?php }
+                        ?>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card-body">
+                            <?php if (is_null($scaleToEdit)) {
+                            ?>
+                                <form action="<?php echo (Url::toRoute('escala/criar')); ?>" method="post">
+                                <?php } else {
+                                ?>
+                                    <form action="<?php echo (Url::toRoute('escala/atualizar', $scaleToEdit->idescala));
+                                                    ?>" method="post">
+                                    <?php }
+                                    ?>
+                                    <!-- voo -->
+                                    <div class="form-group">
+                                        <label for="idvoo">Voo</label>
+                                        <select name="idvoo" class="custom-select">
+                                            <option value="" disabled hidden selected> - </option>
+                                            <?php foreach ($flights as $flight) {  ?>
+                                                <option value="<?php echo ($flight->idvoo); ?>" <?php if (!is_null($scaleToEdit) && $scaleToEdit->idvoo) {
+                                                                                                    echo "selected";
+                                                                                                }
+                                                                                                ?>>
+                                                    <?php if (empty($flight->descricao)) {
+                                                        echo ("Voo " . $flight->idvoo . " (sem descrição)");
+                                                    } else {
+                                                        echo ("Voo " . $flight->idvoo . " ($flight->descricao)");
+                                                    } ?>
+                                                </option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <!-- add aeroporto origem -->
+                                    <div class="form-group">
+                                        <label for="">Aeroporto Origem</label>
+                                        <div class="form-group input-group">
+                                            <select name="idaeroportoorigem" class="custom-select">
+                                                <!-- selecionar Aeroporto -->
+                                                <option value="" disabled hidden selected> - </option>
+                                                <?php foreach ($airports as $airport) {  ?>
+                                                    <option value="<?php echo ($airport->idaeroporto); ?>" <?php if (!is_null($scaleToEdit) && $scaleToEdit->idaeroportoorigem == $airport->idaeroporto) {
+                                                                                                                echo "selected";
+                                                                                                            }
+                                                                                                            ?>><?= $airport->nome . " (" . $airport->pais . ")" ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- add aeroporto destino -->
+                                    <div class="form-group">
+                                        <label for="">Aeroporto Destino</label>
+                                        <div class="form-group input-group">
+                                            <select name="idaeroportodestino" class="custom-select">
+                                                <!-- selecionar Aeroporto -->
+                                                <option value="" disabled hidden selected> - </option>
+                                                <?php foreach ($airports as $airport) {  ?>
+                                                    <option value="<?php echo ($airport->idaeroporto); ?>" <?php if (!is_null($scaleToEdit) && $scaleToEdit->idaeroportodestino == $airport->idaeroporto) {
+                                                                                                                echo "selected";
+                                                                                                            }
+                                                                                                            ?>><?= $airport->nome . " (" . $airport->pais . ")" ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- aviao -->
+                                    <div class="form-group">
+                                        <label for="idvoo">Avião</label>
+                                        <select name="aviao" class="custom-select">
+                                            <!-- selecionar Aeroporto -->
+                                            <option value="" disabled hidden selected> - </option>
+                                            <?php foreach ($airplanes as $airplane) {  ?>
+                                                <option value="<?php echo ($airplane->idaviao); ?>" <?php if (!is_null($scaleAirplaneToEdit) && $scaleAirplaneToEdit == $airplane->idaviao) {
+                                                                                                        echo "selected";
+                                                                                                    }
+                                                                                                    ?>><?= "#$airplane->referencia - " . $airplane->tipoaviao . " (" . $airplane->lotacaototal . ")" ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <!-- add data partida -->
+                                    <div class="form-group">
+                                        <label for="horarioorigem">Horário Partida</label>
+                                        <input value="<?php if (!is_null($scaleToEdit)) {
+                                                            echo ($scaleToEdit->horarioorigem->format('Y-m-d\Th:i'));
+                                                        }
+                                                        ?>" type="datetime-local" class="form-control" id="horarioorigem" name="horarioorigem">
+                                    </div>
+
+                                    <!-- add data regresso -->
+                                    <div class="form-group">
+                                        <label for="horariodestino">Horário Chegada</label>
+                                        <input value="<?php if (!is_null($scaleToEdit)) {
+                                                            echo ($scaleToEdit->horariodestino->format('Y-m-d\Th:i'));
+                                                        }
+                                                        ?>" type="datetime-local" class="form-control" id="horariodestino" name="horariodestino">
+                                    </div>
+
+                                    <!-- add distancia -->
+                                    <div class="form-group">
+                                        <label for="distancia">Distância</label>
+                                        <input value="<?php if (!is_null($scaleToEdit)) {
+                                                            echo ($scaleToEdit->distancia);
+                                                        }
+                                                        ?>" type="number" min="0" class="form-control" id="distancia" name="distancia">
+                                    </div>
+                                    <!-- Botao criar/editar -->
+                                    <?php if (is_null($scaleToEdit)) {
+                                    ?>
+                                        <button type="submit" style="float: right;" class="btn btn-outline-success mb-2">Criar</button>
+                                    <?php } else {
+                                    ?>
+                                        <button type="submit" style="float: right;" class="btn btn-outline-info mb-2">Editar</button>
+                                    <?php  } ?>
+                                    </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="<?= Asset::js('/sb-admin-2.min.js') ?>"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="<?= Asset::js('/demo/chart-area-demo.js') ?>"></script>
+    <script src="<?= Asset::js('/demo/chart-pie-demo.js') ?>"></script>
+
+</body>
+
+</html>

@@ -1,18 +1,15 @@
 <?php
 
 use ArmoredCore\WebObjects\Asset;
-use ArmoredCore\WebObjects\Data;
 use ArmoredCore\WebObjects\Layout;
 use ArmoredCore\WebObjects\URL;
+use ArmoredCore\WebObjects\Data;
 
-$airports = Data::get('airports');
-$airportToEdit = Data::get('airportToEdit');
-
-if (!($airportToEdit instanceof Airport)) {
-    $airportToEdit = null;
-}
+$airplanes = Data::get('airplanes');
+$airplaneToEdit = Data::get('airplaneToEdit');
 
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -24,7 +21,7 @@ if (!($airportToEdit instanceof Airport)) {
 
     <!-- Custom fonts for this template-->
     <link href="<?= Asset::css('/template/fontawesome-free/css/all.min.css') ?>" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,200,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?= Asset::css('/template/sb-admin-2.css') ?>" rel="stylesheet">
@@ -34,49 +31,49 @@ if (!($airportToEdit instanceof Airport)) {
 <body>
     <div id="wrapper">
         <!-- Sidebar -->
-        <?php Layout::includeLayout('leftbarAdmin') ?>
-        <!-- End of Sidebar -->
+        <?php Layout::includeLayout('leftbarGestorVoo') ?>
+
         <div id="content-wrapper" class="d-flex flex-column">
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mt-3 mb-4 text-gray-800">Aeroportos</h1>
+                <h1 class="h3 mt-3 mb-4 text-gray-800">Aviões</h1>
 
                 <!-- mensagens de erro, sucesso e aviso -->
                 <?php Layout::includeLayout('mensagens') ?>
 
+                <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <i class="fas fa-list"></i> Lista Aeroportos
+                        <i class="fas fa-list"></i> Lista Aviões
                     </div>
-                    <!-- Tabela Aeroportos -->
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 30%">Nome</th>
-                                        <th style="width: 30%">Cidade</th>
-                                        <th style="width: 30%">País</th>
+                                        <th style="width: 30%">Referência</th>
+                                        <th style="width: 30%">Lotação Avião</th>
+                                        <th style="width: 30%">Tipo Avião</th>
                                         <th style="width: 10%">Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    foreach ($airports as $airport) { ?>
+                                    foreach ($airplanes as $airplane) { ?>
                                         <tr>
-                                            <td><?= $airport->nome ?></td>
-                                            <td><?= $airport->cidade ?></td>
-                                            <td><?= $airport->pais ?></td>
+                                            <td><?= $airplane->referencia ?></td>
+                                            <td><?= $airplane->lotacaototal ?></td>
+                                            <td><?= $airplane->tipoaviao ?></td>
                                             <td>
                                                 <!-- editar -->
-                                                <form style="float: left; padding-right: 2px;" action="<?= Url::toRoute('aeroporto/editar', $airport->idaeroporto) ?>" method="POST">
+                                                <form style="float: left; padding-right: 2px;" action="<?= Url::toRoute('aviao/editar', $airplane->idaviao) ?> " method="POST">
                                                     <button class="btn btn-info btn-circle btn-sm" type="submit">
                                                         <i class="fas fa-pencil-alt"></i>
                                                     </button>
                                                 </form>
                                                 <!-- eliminar -->
-                                                <form style="float: left; padding-right: 2px;" action="<?= Url::toRoute('aeroporto/eliminar', $airport->idaeroporto) ?>" method="POST">
+                                                <form style="float: left; padding-right: 2px;" action="<?= Url::toRoute('aviao/eliminar', $airplane->idaviao) ?>" method="POST">
                                                     <button class="btn btn-danger btn-circle btn-sm" type="submit">
                                                         <i class="fas fa-trash-alt"></i>
                                                     </button>
@@ -90,57 +87,71 @@ if (!($airportToEdit instanceof Airport)) {
                     </div>
                 </div>
 
-                <!-- ADD AEROPORTO -->
+                <!-- ADD AVIOES -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <?php if (is_null($airportToEdit)) { ?>
-                            <i class="fas fa-plus"></i> Adicionar Aeroporto
-                        <?php } else { ?>
-                            <i class="fas fa-pencil-alt"></i> Editar Aeroporto
-                        <?php }  ?>
+                        <?php if (is_null($airplaneToEdit)) {
+                        ?>
+                            <i class="fas fa-plus"></i> Adicionar Avião
+                        <?php } else {
+                        ?>
+                            <i class="fas fa-pencil-alt"></i> Editar Avião
+                        <?php }
+                        ?>
                     </div>
                     <div class="col-md-4">
                         <div class="card-body">
-                            <?php if (is_null($airportToEdit)) { ?>
-                                <form action="<?php echo (Url::toRoute('aeroporto/criar')); ?>" method="post">
-                                <?php } else { ?>
-                                    <form action="<?php echo (Url::toRoute('aeroporto/atualizar', $airportToEdit->idaeroporto)); ?>" method="post">
-                                    <?php } ?>
-                                    <!-- nome aeroporto -->
+                            <?php if (is_null($airplaneToEdit)) {
+                            ?>
+                                <form action="<?php echo (Url::toRoute('aviao/criar')); ?>" method="post">
+                                <?php } else {
+                                ?>
+                                    <form action="<?php echo (Url::toRoute('aviao/atualizar', $airplaneToEdit->idaviao));
+                                                    ?>" method="post">
+                                    <?php }
+                                    ?>
+                                    <!-- add referencia -->
                                     <div class="form-group">
-                                        <label for="nome">Nome</label>
-                                        <input value="<?php if (!is_null($airportToEdit)) {
-                                                            echo ($airportToEdit->nome);
-                                                        } ?>" type="text" class="form-control" id="nome" name="nome">
+                                        <label for="referencia">Referência</label>
+                                        <input value="<?php if (!is_null($airplaneToEdit)) {
+                                                            echo ($airplaneToEdit->referencia);
+                                                        }
+                                                        ?>" type="text" class="form-control" id="referencia" name="referencia">
                                     </div>
-                                    <!-- cidade aeroporto -->
+                                    <!-- add lotação -->
                                     <div class="form-group">
-                                        <label for="cidade">Cidade</label>
-                                        <input value="<?php if (!is_null($airportToEdit)) {
-                                                            echo ($airportToEdit->cidade);
-                                                        } ?>" type="text" class="form-control" id="cidade" name="cidade">
+                                        <label for="lotacaototal">Lotação</label>
+                                        <input value="<?php if (!is_null($airplaneToEdit)) {
+                                                            echo ($airplaneToEdit->lotacaototal);
+                                                        }
+                                                        ?>" type="number" min="0" class="form-control" id="lotacaototal" name="lotacaototal">
                                     </div>
-                                    <!-- pais aeroporto -->
+                                    <!-- add tipo avião -->
                                     <div class="form-group">
-                                        <label for="pais">País</label>
-                                        <input value="<?php if (!is_null($airportToEdit)) {
-                                                            echo ($airportToEdit->pais);
-                                                        } ?>" type="text" class="form-control" id="pais" name="pais">
+                                        <label for="tipoaviao">Tipo de Avião</label>
+                                        <input value="<?php if (!is_null($airplaneToEdit)) {
+                                                            echo ($airplaneToEdit->tipoaviao);
+                                                        }
+                                                        ?>" type="text" class="form-control" id="tipoaviao" name="tipoaviao">
                                     </div>
                                     <!-- Botao criar/editar -->
-                                    <?php if (is_null($airportToEdit)) { ?>
+                                    <?php if (is_null($airplaneToEdit)) {
+                                    ?>
                                         <button type="submit" style="float: right;" class="btn btn-outline-success mb-2">Criar</button>
                                     <?php } else {
                                     ?>
                                         <button type="submit" style="float: right;" class="btn btn-outline-info mb-2">Editar</button>
-                                    <?php } ?>
+                                    <?php  }
+                                    ?>
                                     </form>
+                                </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
